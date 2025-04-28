@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,39 +73,88 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              // Popular Recipes section
-              _buildSection(
-                'Popular Recipes',
-                [
-                  _buildRecipeCard(
-                    'Pan-Roasted Honey Garlic Chicken Thighs',
-                    '40 mins',
-                    '380 kcals',
-                    'Jane Doe',
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Popular Recipes section
+                      _buildSection(
+                        'Popular Recipes',
+                        [
+                          _buildRecipeCard(
+                            'Pan-Roasted Honey Garlic Chicken Thighs',
+                            '40 mins',
+                            '380 kcals',
+                            'Jane Doe',
+                          ),
+                          _buildRecipeCard(
+                            'Pan-Roasted Chicken Thighs',
+                            '35 mins',
+                            '350 kcals',
+                            'Jane Doe',
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      // Healthy Eats section
+                      _buildSection(
+                        'Healthy Eats',
+                        [
+                          _buildRecipeCard(
+                            'Grilled Salmon with Vegetables',
+                            '25 mins',
+                            '300 kcals',
+                            'John Doe',
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  _buildRecipeCard(
-                    'Pan-Roasted Chicken Thighs',
-                    '35 mins',
-                    '350 kcals',
-                    'Jane Doe',
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              // Healthy Eats section
-              _buildSection(
-                'Healthy Eats',
-                [
-                  _buildRecipeCard(
-                    'Grilled Salmon with Vegetables',
-                    '25 mins',
-                    '300 kcals',
-                    'John Doe',
-                  ),
-                ],
+                ),
               ),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.green,
+          unselectedItemColor: Colors.grey,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search_outlined),
+              activeIcon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_outline),
+              activeIcon: Icon(Icons.favorite),
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              activeIcon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
         ),
       ),
     );
@@ -141,6 +203,13 @@ class HomePage extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
