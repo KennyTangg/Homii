@@ -1,27 +1,62 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
 
-class DietSelectionPage extends StatelessWidget {
+class DietSelectionPage extends StatefulWidget {
   const DietSelectionPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<String> diets = [
-      'Low-Carb',
-      'Gluten-free',
-      'Vegan',
-      'Vegetarian',
-      'Dairy-free',
-      'Keto',
-      'Mediterranean',
-      'Ovo Vegetarian',
-      'Ovo-Lacto Vegetarian',
-      'Paleo',
-      'Pescetarian',
-      'Lacto Vegetarian',
-    ];
+  State<DietSelectionPage> createState() => _DietSelectionPageState();
+}
 
+class _DietSelectionPageState extends State<DietSelectionPage> {
+  final List<String> diets = [
+    'Low-Carb',
+    'Gluten-free',
+    'Vegan',
+    'Vegetarian',
+    'Dairy-free',
+    'Keto',
+    'Mediterranean',
+    'Ovo Vegetarian',
+    'Ovo-Lacto Vegetarian',
+    'Paleo',
+    'Pescetarian',
+    'Lacto Vegetarian',
+  ];
+
+  String? selectedDiet;
+
+  Widget _buildDietChip(String label) {
+    final isSelected = selectedDiet == label;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedDiet = isSelected ? null : label;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.white : Colors.white.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 20,
+            color: isSelected ? Colors.deepOrange : Colors.white,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepOrange,
+      backgroundColor: Colors.deepOrangeAccent,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -32,7 +67,7 @@ class DietSelectionPage extends StatelessWidget {
               const Text(
                 'Do you have a\nspecific diet?',
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 42,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -41,26 +76,37 @@ class DietSelectionPage extends StatelessWidget {
               Expanded(
                 child: Wrap(
                   spacing: 10,
-                  runSpacing: 10,
+                  runSpacing: 20,
                   children: diets.map((diet) => _buildDietChip(diet)).toList(),
                 ),
               ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: selectedDiet != null
+                      ? () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
+                        }
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
+                    disabledBackgroundColor: Colors.white.withOpacity(0.2),
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Continue',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.deepOrange,
+                      color: selectedDiet != null
+                          ? Colors.deepOrange
+                          : Colors.white,
                     ),
                   ),
                 ),
@@ -71,18 +117,5 @@ class DietSelectionPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildDietChip(String label) {
-    return Chip(
-      label: Text(
-        label,
-        style: const TextStyle(color: Colors.white),
-      ),
-      backgroundColor: Colors.white.withOpacity(0.3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: Colors.white),
-      ),
-    );
-  }
 }
+
