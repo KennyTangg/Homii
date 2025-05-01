@@ -123,34 +123,35 @@ class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin
               ),
             ),
           ),
-          // Swipe Down Indicator
-          Positioned(
-            bottom: 40,
-            left: 0,
-            right: 0,
-            child: AnimatedBuilder(
-              animation: _arrowAnimation,
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: Offset(0, _arrowAnimation.value),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.keyboard_arrow_down, size: 40, color: Colors.green[800]),
-                      Text(
-                        "Swipe down to continue",
-                        style: TextStyle(
-                          color: Colors.green[800],
-                          fontWeight: FontWeight.w900,
-                          fontSize: 20,
+          if (dragDistance == 0)
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: AnimatedBuilder(
+                animation: _arrowAnimation,
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: Offset(0, _arrowAnimation.value),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.green[800]),
+                        Text(
+                          "Swipe down to continue",
+                          style: TextStyle(
+                            color: Colors.green[800],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
+
         ],
       ),
     );

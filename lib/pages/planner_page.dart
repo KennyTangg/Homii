@@ -8,7 +8,7 @@ class PlannerPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,6 +61,7 @@ class PlannerPage extends StatelessWidget {
               _buildDaySection('Tomorrow, 19 March'),
               const SizedBox(height: 20),
               _buildDaySection('20 March'),
+              const SizedBox(height: 30), // Extra space at bottom for safe scroll
             ],
           ),
         ),

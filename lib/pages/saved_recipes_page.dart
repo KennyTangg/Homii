@@ -40,7 +40,7 @@ class SavedRecipesPage extends StatelessWidget {
                     crossAxisCount: 2,
                     crossAxisSpacing: 15,
                     mainAxisSpacing: 15,
-                    childAspectRatio: 0.8,
+                    childAspectRatio: 0.65,
                   ),
                   itemCount: 4,
                   itemBuilder: (context, index) {
