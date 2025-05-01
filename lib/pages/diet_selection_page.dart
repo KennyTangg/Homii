@@ -35,17 +35,21 @@ class _DietSelectionPageState extends State<DietSelectionPage> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        margin: const EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.white.withOpacity(0.2),
+          color: Colors.transparent, // Set to transparent
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white),
+          border: Border.all(
+            color: Colors.white,
+            width: isSelected ? 2.0 : 1.0  
+          ),
         ),
         child: Text(
           label,
           style: TextStyle(
-            fontSize: 20,
-            color: isSelected ? Colors.deepOrange : Colors.white,
+            fontSize: 16,
+            color:Colors.white,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
         ),
@@ -63,20 +67,20 @@ class _DietSelectionPageState extends State<DietSelectionPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               const Text(
-                'Do you have a\nspecific diet?',
+                'Do you have a specific diet?',
                 style: TextStyle(
-                  fontSize: 42,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               Expanded(
                 child: Wrap(
                   spacing: 10,
-                  runSpacing: 20,
+                  runSpacing: 10,
                   children: diets.map((diet) => _buildDietChip(diet)).toList(),
                 ),
               ),
@@ -94,7 +98,6 @@ class _DietSelectionPageState extends State<DietSelectionPage> {
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    disabledBackgroundColor: Colors.white.withOpacity(0.2),
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -118,4 +121,3 @@ class _DietSelectionPageState extends State<DietSelectionPage> {
     );
   }
 }
-

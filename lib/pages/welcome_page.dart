@@ -8,83 +8,101 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStateMixin {
+class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin {
   double dragDistance = 0.0;
   bool isDragging = false;
-  bool isNavigating = false;
-  late AnimationController _animationController;
-  late Animation<double> _animation;
+
+  late AnimationController _slideController;
+  late Animation<double> _slideAnimation;
+
+  late AnimationController _arrowController;
+  late Animation<double> _arrowAnimation;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+
+    _slideController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
     );
-    _animation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInCubic,
+
+    // Arrow bounce animation
+    _arrowController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    )..repeat(reverse: true);
+
+    _arrowAnimation = Tween<double>(begin: 0, end: 10).animate(
+      CurvedAnimation(parent: _arrowController, curve: Curves.easeInOut),
     );
-    _animation.addListener(() {
-      if (!isDragging) {
+  }
+
+  void _animateTo(double end) {
+    final start = dragDistance;
+
+    _slideAnimation = Tween<double>(begin: start, end: end).animate(CurvedAnimation(
+      parent: _slideController,
+      curve: Curves.easeOut,
+    ))
+      ..addListener(() {
         setState(() {
-          final width = MediaQuery.of(context).size.width;
-          dragDistance = isNavigating ? -width * _animation.value : dragDistance * (1 - _animation.value);
+          dragDistance = _slideAnimation.value;
         });
-      }
+      });
+
+    _slideController.forward(from: 0);
+  }
+
+  void _handleDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      dragDistance += details.delta.dy;
+      if (dragDistance > 0) dragDistance = 0;
     });
-    _animation.addStatusListener((status) {
-      if (status == AnimationStatus.completed && isNavigating) {
+  }
+
+  void _handleDragEnd(DragEndDetails details) {
+    final height = MediaQuery.of(context).size.height;
+
+    if (dragDistance.abs() > height / 2 || (details.primaryVelocity ?? 0) < -500) {
+      _animateTo(-height);
+      Future.delayed(const Duration(milliseconds: 300), () {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             pageBuilder: (_, __, ___) => const DietSelectionPage(),
             transitionDuration: Duration.zero,
           ),
         );
-      }
-    });
+      });
+    } else {
+      _animateTo(0);
+    }
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _slideController.dispose();
+    _arrowController.dispose();
     super.dispose();
-  }
-
-  void _handleDragUpdate(DragUpdateDetails details) {
-    setState(() {
-      dragDistance += details.delta.dx;
-      if (dragDistance > 0) dragDistance = 0;
-      final width = MediaQuery.of(context).size.width;
-      if (dragDistance < -width) dragDistance = -width;
-    });
-  }
-
-  void _handleDragEnd(DragEndDetails details) {
-    isDragging = false;
-    final width = MediaQuery.of(context).size.width;
-    isNavigating = dragDistance.abs() > width / 2 || (details.primaryVelocity ?? 0) < -500;
-    _animationController.forward(from: 0);
   }
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         children: [
           Transform.translate(
-            offset: Offset(width + dragDistance, 0),
+            offset: Offset(0, height + dragDistance),
             child: const DietSelectionPage(),
           ),
           GestureDetector(
-            onHorizontalDragStart: (_) => isDragging = true,
-            onHorizontalDragUpdate: _handleDragUpdate,
-            onHorizontalDragEnd: _handleDragEnd,
+            onVerticalDragStart: (_) => isDragging = true,
+            onVerticalDragUpdate: _handleDragUpdate,
+            onVerticalDragEnd: _handleDragEnd,
             child: Transform.translate(
-              offset: Offset(dragDistance, 0),
+              offset: Offset(0, dragDistance),
               child: Image.asset(
                 'assets/images/welcome_page_image.png',
                 width: double.infinity,
@@ -105,10 +123,36 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
               ),
             ),
           ),
+          // Swipe Down Indicator
+          Positioned(
+            bottom: 40,
+            left: 0,
+            right: 0,
+            child: AnimatedBuilder(
+              animation: _arrowAnimation,
+              builder: (context, child) {
+                return Transform.translate(
+                  offset: Offset(0, _arrowAnimation.value),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.keyboard_arrow_down, size: 40, color: Colors.green[800]),
+                      Text(
+                        "Swipe down to continue",
+                        style: TextStyle(
+                          color: Colors.green[800],
+                          fontWeight: FontWeight.w900,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-
