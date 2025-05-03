@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/authentication/welcome_screen.dart';
-import 'screens/diet_selection_screen.dart';
-import 'screens/home_screen.dart';
+import 'package:homii/screens/authentication/splash_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -13,13 +11,22 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Homii',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
+        colorScheme: const ColorScheme.light(
+          surface: Colors.white,
+          onSurface: Colors.black,
+          primary: Color.fromRGBO(69, 121, 66, 1),
+          onPrimary: Colors.white,
+          secondary: Color.fromRGBO(223, 103, 48, 1),
+          onSecondary: Colors.white,
+          tertiary: Color.fromRGBO(255, 200, 36, 1),
+          error: Colors.red,
+          outline: Color(0xFF424242),
+        ),
       ),
-      // Start with the welcome page
-      home: const WelcomePage(),
+      home: const SplashScreen(),
     );
   }
 }

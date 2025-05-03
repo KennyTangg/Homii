@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '../diet_selection_screen.dart';
 
-class WelcomePage extends StatefulWidget {
-  const WelcomePage({super.key});
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
 
   @override
-  State<WelcomePage> createState() => _WelcomePageState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomePageState extends State<WelcomePage> with TickerProviderStateMixin {
+class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateMixin {
   double dragDistance = 0.0;
   bool isDragging = false;
 
