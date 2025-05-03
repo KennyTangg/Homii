@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'diet_selection_page.dart';
+import '../diet_selection_screen.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});

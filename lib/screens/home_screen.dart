@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'saved_recipes_page.dart';
-import 'planner_page.dart';
-import 'pantry_page.dart';
-import 'cart_page.dart';
+import 'saved_recipes_screen.dart';
+import 'planner_screen.dart';
+import 'pantry_screen.dart';
+import 'cart_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -73,14 +73,14 @@ class _HomePageState extends State<HomePage> {
               label: 'Planner',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.kitchen_outlined),
-              activeIcon: Icon(Icons.kitchen),
-              label: 'Pantry',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart_outlined),
               activeIcon: Icon(Icons.shopping_cart),
               label: 'Cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.kitchen_outlined),
+              activeIcon: Icon(Icons.kitchen),
+              label: 'Pantry',
             ),
           ],
         ),

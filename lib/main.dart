@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'pages/welcome_page.dart';
-import 'pages/diet_selection_page.dart';
-import 'pages/home_page.dart';
+import 'screens/authentication/welcome_screen.dart';
+import 'screens/diet_selection_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MainApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
