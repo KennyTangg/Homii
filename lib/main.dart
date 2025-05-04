@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
       title: 'Homii',
       theme: ThemeData(
         colorScheme: const ColorScheme.light(
-          surface: Colors.white,
+          surface: Color.fromRGBO(247, 244, 237, 1),
           onSurface: Colors.black,
           primary: Color.fromRGBO(69, 121, 66, 1),
           onPrimary: Colors.white,

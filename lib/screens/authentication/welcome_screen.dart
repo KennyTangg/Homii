@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../diet_selection_screen.dart';
+import 'package:homii/screens/user_preferences/intro_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -69,7 +69,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
       Future.delayed(const Duration(milliseconds: 300), () {
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const DietSelectionPage(),
+            pageBuilder: (_, __, ___) => const IntroScreen(),
             transitionDuration: Duration.zero,
           ),
         );
@@ -95,7 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
         children: [
           Transform.translate(
             offset: Offset(0, height + dragDistance),
-            child: const DietSelectionPage(),
+            child: IntroScreen(),
           ),
           GestureDetector(
             onVerticalDragStart: (_) => isDragging = true,

@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
-import 'home/home_screen.dart';
+import '../home/home_screen.dart';
 
-class DietSelectionPage extends StatefulWidget {
-  const DietSelectionPage({super.key});
+class GoalsScreen extends StatefulWidget {
+  const GoalsScreen({super.key});
 
   @override
-  State<DietSelectionPage> createState() => _DietSelectionPageState();
+  State<GoalsScreen> createState() => _GoalsScreenState();
 }
 
-class _DietSelectionPageState extends State<DietSelectionPage> {
-  final List<String> diets = [
-    'Low-Carb',
-    'Gluten-free',
-    'Vegan',
-    'Vegetarian',
-    'Dairy-free',
-    'Keto',
-    'Mediterranean',
-    'Ovo Vegetarian',
-    'Ovo-Lacto Vegetarian',
-    'Paleo',
-    'Pescetarian',
-    'Lacto Vegetarian',
+class _GoalsScreenState extends State<GoalsScreen> {
+  final List<String> goals = [
+    'Lose-weight', 'Gain-muscle', 'Eat healthy', 'Easy recipes',
+    'Meal prep', 'Quick meals', 'Budget-friendly', 'Low-calorie',
   ];
 
-  String? selectedDiet;
+  String? selectedGoal;
 
   Widget _buildDietChip(String label) {
-    final isSelected = selectedDiet == label;
+    final isSelected = selectedGoal == label;
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedDiet = isSelected ? null : label;
+          selectedGoal = isSelected ? null : label;
         });
       },
       child: Container(
@@ -60,20 +50,21 @@ class _DietSelectionPageState extends State<DietSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepOrangeAccent,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
               const Text(
-                'Do you have a specific diet?',
+                'What are your home-cooking goals?',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
+                  height: 1.2,
                 ),
               ),
               const SizedBox(height: 20),
@@ -81,13 +72,13 @@ class _DietSelectionPageState extends State<DietSelectionPage> {
                 child: Wrap(
                   spacing: 10,
                   runSpacing: 10,
-                  children: diets.map((diet) => _buildDietChip(diet)).toList(),
+                  children: goals.map((diet) => _buildDietChip(diet)).toList(),
                 ),
               ),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: selectedDiet != null
+                  onPressed: selectedGoal != null
                       ? () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
@@ -107,9 +98,9 @@ class _DietSelectionPageState extends State<DietSelectionPage> {
                     'Continue',
                     style: TextStyle(
                       fontSize: 18,
-                      color: selectedDiet != null
-                          ? Colors.deepOrange
-                          : Colors.white,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(69, 121, 66, 1)
+
                     ),
                   ),
                 ),
