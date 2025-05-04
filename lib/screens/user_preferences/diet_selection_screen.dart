@@ -67,6 +67,7 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 10),
               const Text(
                 'Do you have a specific diet?',
                 style: TextStyle(
@@ -89,9 +90,23 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
                 child: ElevatedButton(
                   onPressed: selectedDiet != null
                       ? () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const MeasurementsScreen(),
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 700),
+                              pageBuilder: (context, animation, secondaryAnimation) => MeasurementsScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = Offset(1.0, 0.0);
+                                const end = Offset.zero;
+                                const curve = Curves.ease;
+
+                                final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                final offsetAnimation = animation.drive(tween);
+
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              },
                             ),
                           );
                         }

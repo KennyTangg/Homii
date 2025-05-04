@@ -57,6 +57,7 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 10),
               Text(
                 'Choose the information you would like to be shown first.',
                 style: TextStyle(

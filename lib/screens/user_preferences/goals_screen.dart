@@ -58,6 +58,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 10),
               const Text(
                 'What are your home-cooking goals?',
                 style: TextStyle(
@@ -80,9 +81,23 @@ class _GoalsScreenState extends State<GoalsScreen> {
                 child: ElevatedButton(
                   onPressed: selectedGoal != null
                       ? () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const DietSelectionScreen(),
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              transitionDuration: Duration(milliseconds: 700),
+                              pageBuilder: (context, animation, secondaryAnimation) => DietSelectionScreen(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                const begin = Offset(1.0, 0.0);
+                                const end = Offset.zero;
+                                const curve = Curves.ease;
+
+                                final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                                final offsetAnimation = animation.drive(tween);
+
+                                return SlideTransition(
+                                  position: offsetAnimation,
+                                  child: child,
+                                );
+                              },
                             ),
                           );
                         }

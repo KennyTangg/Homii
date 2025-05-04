@@ -11,7 +11,7 @@ class IntroScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 30),
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(
@@ -36,8 +36,24 @@ class IntroScreen extends StatelessWidget {
               height: 70,
               child: FloatingActionButton(
                 onPressed: () {
-                  Navigator.push( context,
-                    MaterialPageRoute(builder: (context) => GoalsScreen()) 
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 700),
+                      pageBuilder: (context, animation, secondaryAnimation) => GoalsScreen(),
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(1.0, 0.0);
+                        const end = Offset.zero;
+                        const curve = Curves.ease;
+
+                        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                        final offsetAnimation = animation.drive(tween);
+
+                        return SlideTransition(
+                          position: offsetAnimation,
+                          child: child,
+                        );
+                      },
+                    ),
                   );
                 },
                 backgroundColor: Theme.of(context).colorScheme.primary,

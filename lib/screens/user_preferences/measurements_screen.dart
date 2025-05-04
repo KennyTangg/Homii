@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homii/screens/user_preferences/info_selection_screen.dart';
 
-
 class MeasurementsScreen extends StatelessWidget {
   const MeasurementsScreen({super.key});
 
@@ -31,9 +30,23 @@ class MeasurementsScreen extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const InfoSelectionScreen(),
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 700),
+                        pageBuilder: (context, animation, secondaryAnimation) => InfoSelectionScreen(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(1.0, 0.0);
+                          const end = Offset.zero;
+                          const curve = Curves.ease;
+
+                          final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          final offsetAnimation = animation.drive(tween);
+
+                          return SlideTransition(
+                            position: offsetAnimation,
+                            child: child,
+                          );
+                        },
                       ),
                     );
                   },
