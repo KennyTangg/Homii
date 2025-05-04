@@ -4,21 +4,21 @@ import 'planner_screen.dart';
 import 'pantry_screen.dart';
 import 'cart_screen.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const SavedRecipesPage(),
-    const PlannerPage(),
-    const PantryPage(),
-    const CartPage(),
+    const SavedRecipesScreen(),
+    const PlannerScreen(),
+    const CartScreen(),
+    const PantryScreen(),
   ];
 
   Widget _getCurrentPage() {

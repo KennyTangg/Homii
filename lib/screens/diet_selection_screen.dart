@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
+import 'home/home_screen.dart';
 
 class DietSelectionPage extends StatefulWidget {
   const DietSelectionPage({super.key});
@@ -91,7 +91,7 @@ class _DietSelectionPageState extends State<DietSelectionPage> {
                       ? () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => const HomePage(),
+                              builder: (context) => const HomeScreen(),
                             ),
                           );
                         }
