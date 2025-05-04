@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:homii/screens/user_preferences/measurements_screen.dart';
+import 'package:homii/screens/home/home_screen.dart';
 
-class DietSelectionScreen extends StatefulWidget {
-  const DietSelectionScreen({super.key});
+class InfoSelectionScreen extends StatefulWidget {
+  const InfoSelectionScreen({super.key});
 
   @override
-  State<DietSelectionScreen> createState() => _DietSelectionScreenState();
+  State<InfoSelectionScreen> createState() => _InfoSelectionScreenState();
 }
 
-class _DietSelectionScreenState extends State<DietSelectionScreen> {
+class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
   final List<String> diets = [
-    'Low-Carb',
-    'Gluten-free',
-    'Vegan',
-    'Vegetarian',
-    'Dairy-free',
-    'Keto',
-    'Mediterranean',
-    'Ovo Vegetarian',
-    'Ovo-Lacto Vegetarian',
-    'Paleo',
-    'Pescetarian',
-    'Lacto Vegetarian',
+    'Calories','Time to cook','Missing ingredients','Recipe Rating',
+    'Cuisine','Dietary restrictions','Meal type','Cooking method',
   ];
 
-  String? selectedDiet;
+  String? selectedInfo;
 
   Widget _buildDietChip(String label) {
-    final isSelected = selectedDiet == label;
+    final isSelected = selectedInfo == label;
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedDiet = isSelected ? null : label;
+          selectedInfo = isSelected ? null : label;
         });
       },
       child: Container(
@@ -41,7 +31,7 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
           color: Colors.transparent, // Set to transparent
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.primary,
             width: isSelected ? 2.0 : 1.0  
           ),
         ),
@@ -49,7 +39,7 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
           label,
           style: TextStyle(
             fontSize: 16,
-            color:Colors.white,
+            color: Theme.of(context).colorScheme.primary,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
         ),
@@ -60,19 +50,19 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepOrangeAccent,
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Do you have a specific diet?',
+              Text(
+                'Choose the information you would like to be shown first.',
                 style: TextStyle(
                   fontSize: 35,
                   fontWeight: FontWeight.w800,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.primary,
                   height: 1.2,
                 ),
               ),
@@ -87,17 +77,17 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: selectedDiet != null
+                  onPressed: selectedInfo != null
                       ? () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => const MeasurementsScreen(),
+                              builder: (context) => const HomeScreen(),
                             ),
                           );
                         }
                       : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -108,7 +98,7 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.deepOrangeAccent,
+                      color: Theme.of(context).colorScheme.tertiary,
                     ),
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homii/screens/user_preferences/diet_selection_screen.dart';
 import '../home/home_screen.dart';
 
 class GoalsScreen extends StatefulWidget {
@@ -53,16 +54,15 @@ class _GoalsScreenState extends State<GoalsScreen> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
               const Text(
                 'What are your home-cooking goals?',
                 style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 35,
+                  fontWeight: FontWeight.w800,
                   color: Colors.white,
                   height: 1.2,
                 ),
@@ -71,7 +71,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
               Expanded(
                 child: Wrap(
                   spacing: 10,
-                  runSpacing: 10,
+                  runSpacing: 5,
                   children: goals.map((diet) => _buildDietChip(diet)).toList(),
                 ),
               ),
@@ -82,7 +82,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       ? () {
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
+                              builder: (context) => const DietSelectionScreen(),
                             ),
                           );
                         }

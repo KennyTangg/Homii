@@ -11,15 +11,15 @@ class IntroScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
           child: Align(
             alignment: Alignment.topLeft,
             child: Text(
               "Let's get to know your eating habits.",
-              style: const TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFE75D25),
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.w800,
+                color: Theme.of(context).colorScheme.secondary,
                 height: 1.2,// Orange color
               ),
             ),
