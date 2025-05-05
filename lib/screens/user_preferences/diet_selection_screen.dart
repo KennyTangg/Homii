@@ -92,7 +92,7 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
                       ? () {
                           Navigator.of(context).push(
                             PageRouteBuilder(
-                              transitionDuration: Duration(milliseconds: 700),
+                              transitionDuration: Duration(milliseconds: 500),
                               pageBuilder: (context, animation, secondaryAnimation) => MeasurementsScreen(),
                               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                                 const begin = Offset(1.0, 0.0);

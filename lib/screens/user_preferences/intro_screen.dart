@@ -38,7 +38,7 @@ class IntroScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 700),
+                      transitionDuration: Duration(milliseconds: 500),
                       pageBuilder: (context, animation, secondaryAnimation) => GoalsScreen(),
                       transitionsBuilder: (context, animation, secondaryAnimation, child) {
                         const begin = Offset(1.0, 0.0);
