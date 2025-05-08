@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
               blurRadius: 10,
             ),
           ],
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           selectedItemColor: Theme.of(context).colorScheme.secondary,
           unselectedItemColor: Colors.grey,
           items: [
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Theme.of(context).colorScheme.outline,
               ),
             ),
             const SizedBox(height: 30),
@@ -193,11 +193,11 @@ class _HomeScreenState extends State<HomeScreen> {
       width: 200,
       margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -229,9 +229,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(title, style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
                 const SizedBox(height: 5),
-                Text('$time · $calories', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                Text('$time · $calories', style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 12)),
                 const SizedBox(height: 5),
-                Text(author, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                Text(author, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 12)),
               ],
             ),
           ),
