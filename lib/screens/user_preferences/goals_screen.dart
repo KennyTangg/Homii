@@ -89,7 +89,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                 const begin = Offset(1.0, 0.0);
                                 const end = Offset.zero;
                                 const curve = Curves.ease;
-
+                                
                                 final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
                                 final offsetAnimation = animation.drive(tween);
 

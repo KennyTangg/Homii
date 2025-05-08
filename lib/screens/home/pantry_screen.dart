@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 
-class PantryScreen extends StatelessWidget {
+class PantryScreen extends StatefulWidget {
   const PantryScreen({super.key});
+
+  @override
+  State<PantryScreen> createState() => _PantryScreenState();
+}
+
+class _PantryScreenState extends State<PantryScreen> {
+  // Map to track checked state of each item
+  final Map<String, bool> _checkedItems = {
+    'Milk': false,
+    'Bread': false,
+    'Garlic': false,
+    'Carrots': false,
+    'Eggs': false,
+    'Onion': false,
+    'Chicken': false,
+    'Potatoes': false,
+    'Butter': false,
+  };
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -23,17 +41,9 @@ class PantryScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Expanded(
                 child: ListView(
-                  children: [
-                    _buildPantryItem('Milk', '14 days left'),
-                    _buildPantryItem('Bread', '14 days left'),
-                    _buildPantryItem('Garlic', '10 days left'),
-                    _buildPantryItem('Carrots', '19 days left'),
-                    _buildPantryItem('Eggs', '24 days left'),
-                    _buildPantryItem('Onion', '35 days left'),
-                    _buildPantryItem('Chicken', '45 days left'),
-                    _buildPantryItem('Potatoes', '56 days left'),
-                    _buildPantryItem('Butter', '60 days left'),
-                  ],
+                  children: _checkedItems.entries.map((entry) {
+                    return _buildPantryItem(entry.key, '14 days left', entry.value);
+                  }).toList(),
                 ),
               ),
             ],
@@ -43,7 +53,7 @@ class PantryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPantryItem(String name, String daysLeft) {
+  Widget _buildPantryItem(String name, String daysLeft, bool isChecked) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(15),
@@ -75,8 +85,19 @@ class PantryScreen extends StatelessWidget {
             ],
           ),
           Checkbox(
-            value: false,
-            onChanged: (value) {},
+            value: isChecked,
+            onChanged: (value) {
+              setState(() {
+                _checkedItems[name] = value ?? false;
+              });
+            },
+            fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+              if (states.contains(MaterialState.selected)) {
+                return Theme.of(context).colorScheme.secondary; // Orange when checked
+              }
+              return Colors.transparent; // Transparent background when unchecked
+            }),
+            side: BorderSide(color: Colors.grey), // Border color when unchecked
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
@@ -86,3 +107,6 @@ class PantryScreen extends StatelessWidget {
     );
   }
 }
+
+
+

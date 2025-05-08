@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'saved_recipes_screen.dart';
 import 'planner_screen.dart';
 import 'pantry_screen.dart';
-import 'cart_screen.dart';
+import 'shop_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _pages = [
     const SavedRecipesScreen(),
     const PlannerScreen(),
-    const CartScreen(),
+    const ShopScreen(),
     const PantryScreen(),
   ];
 
@@ -54,16 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.green,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
           unselectedItemColor: Colors.grey,
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
               activeIcon: Icon(Icons.home),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark_outline),
+              icon: Icon(Icons.bookmark_border_outlined),
               activeIcon: Icon(Icons.bookmark),
               label: 'Saved',
             ),
@@ -73,9 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Planner',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined),
-              activeIcon: Icon(Icons.shopping_cart),
-              label: 'Cart',
+              icon: Icon(Icons.shopping_bag_outlined),
+              activeIcon: Icon(Icons.shopping_bag),
+              label: 'Shop',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.kitchen_outlined),
@@ -240,3 +240,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
+
