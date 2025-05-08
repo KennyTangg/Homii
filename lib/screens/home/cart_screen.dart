@@ -6,9 +6,9 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F0),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Color(0xFFF5F5F0),
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         title: const Text(
           'My Cart',
@@ -156,4 +156,5 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
+
 

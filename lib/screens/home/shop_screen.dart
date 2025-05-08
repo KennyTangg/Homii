@@ -7,7 +7,7 @@ class ShopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -26,25 +26,32 @@ class ShopScreen extends StatelessWidget {
                   ),
                   Stack(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.shopping_cart_outlined),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CartScreen(),
-                            ),
-                          );
-                        },
-                        iconSize: 28,
-                        color: Colors.green,
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.shopping_cart_outlined),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CartScreen(),
+                              ),
+                            );
+                          },
+                          iconSize: 24,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                       Positioned(
-                        right: 8,
-                        top: 8,
+                        right: 0,
+                        top: 0,
                         child: Container(
                           padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             color: Colors.red,
                             shape: BoxShape.circle,
                           ),
@@ -63,17 +70,18 @@ class ShopScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search ingredient eg. milk',
-                  prefixIcon: const Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search ingredient eg. milk',
+                    prefixIcon: const Icon(Icons.search),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 15),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0),
                 ),
               ),
               const SizedBox(height: 20),
@@ -84,12 +92,12 @@ class ShopScreen extends StatelessWidget {
                   mainAxisSpacing: 15,
                   childAspectRatio: 0.85,
                   children: [
-                    _buildProductCard('Greenfields Milk\n800 ml', 'Rp 20,000'),
-                    _buildProductCard('8-pack Carton Eggs', 'Rp 32,000'),
-                    _buildProductCard('Wholegrain Bread\n370 gr', 'Rp 17,000'),
-                    _buildProductCard('Button Mushrooms\n150 gr', 'Rp 15,000'),
-                    _buildProductCard('Organic Spinach\n200 gr', 'Rp 12,000'),
-                    _buildProductCard('Fresh Tomatoes\n500 gr', 'Rp 10,000'),
+                    _buildProductCard('Greenfields Milk\n800 ml', 'Rp 20.000'),
+                    _buildProductCard('8-pack Carton Eggs\n', 'Rp 32.000'),
+                    _buildProductCard('Wholegrain Bread\n370 gr', 'Rp 17.000'),
+                    _buildProductCard('Button Mushrooms\n150 gr', 'Rp 15.000'),
+                    _buildProductCard('Organic Spinach\n200 gr', 'Rp 12.000'),
+                    _buildProductCard('Fresh Tomatoes\n500 gr', 'Rp 10.000'),
                   ],
                 ),
               ),
@@ -103,7 +111,7 @@ class ShopScreen extends StatelessWidget {
   Widget _buildProductCard(String name, String price) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
@@ -113,6 +121,7 @@ class ShopScreen extends StatelessWidget {
             child: Stack(
               children: [
                 Container(
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                     borderRadius: const BorderRadius.only(
@@ -160,4 +169,7 @@ class ShopScreen extends StatelessWidget {
     );
   }
 }
+
+
+
 

@@ -6,61 +6,78 @@ class PlannerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Planner',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Meal Plan: 2,400 kcal',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
+              const Text(
+                'Planner',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
+              Text(
+                'Meal Plan: 2,400 kcal',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 15),
               Row(
                 children: [
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.orange,
-                      side: const BorderSide(color: Colors.orange),
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Theme.of(context).colorScheme.secondary,
+                        side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: const Text('Edit meal plan'),
                     ),
-                    child: const Text('Edit meal plan'),
                   ),
                   const SizedBox(width: 10),
-                  OutlinedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.add),
-                    label: const Text('Auto-add meals'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.orange,
-                      side: const BorderSide(color: Colors.orange),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.add),
+                      label: const Text('Auto-add meals'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Theme.of(context).colorScheme.secondary,
+                        side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              _buildDaySection('Today, 18 March'),
-              const SizedBox(height: 20),
-              _buildDaySection('Tomorrow, 19 March'),
-              const SizedBox(height: 20),
-              _buildDaySection('20 March'),
+              const SizedBox(height: 25),
+              _buildDaySection(context, 'Today, 18 March', [
+                _MealInfo('Overnight Oats and Greek Yogurt', 'Breakfast'),
+                _MealInfo('Pan-Roasted Honey Garlic Chicken Thighs', 'Lunch'),
+              ]),
+              const SizedBox(height: 25),
+              _buildDaySection(context, 'Tomorrow, 19 March', [
+                _MealInfo('Overnight Oats and Greek Yogurt', 'Breakfast'),
+                _MealInfo('Pan-Roasted Honey Garlic Chicken Thighs', 'Lunch'),
+                _MealInfo('Braised Beef Stir Fry', 'Dinner'),
+              ]),
+              const SizedBox(height: 25),
+              _buildDaySection(context, '20 March', [
+                _MealInfo('Overnight Oats and Greek Yogurt', 'Breakfast'),
+              ]),
               const SizedBox(height: 30),
             ],
           ),
@@ -69,7 +86,7 @@ class PlannerScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDaySection(String date) {
+  Widget _buildDaySection(BuildContext context, String date, List<_MealInfo> meals) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -81,73 +98,99 @@ class PlannerScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        _buildMealCard('Breakfast', 'Overnight Oats and Greek Yogurt'),
-        const SizedBox(height: 10),
-        _buildMealCard('Lunch', 'Pan-Roasted Honey Garlic Chicken Thighs'),
+        ...meals.map((meal) => Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: _buildMealCard(context, meal.recipe, meal.mealType),
+        )).toList(),
       ],
     );
   }
 
-  Widget _buildMealCard(String mealType, String recipe) {
-    return GestureDetector(
-      onTap: () {
-        // Handle tap on meal card
-        print('Tapped on $mealType: $recipe');
-        // You can navigate to a detail screen here
-      },
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(10),
+  Widget _buildMealCard(BuildContext context, String recipe, String mealType) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
               ),
             ),
-            const SizedBox(width: 15),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    mealType,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                    ),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  recipe,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
-                  const SizedBox(height: 5),
-                  Text(
-                    recipe,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  mealType,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 14,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const Icon(Icons.check, color: Colors.green),
-            const SizedBox(width: 10),
-            const Icon(Icons.more_vert),
-          ],
-        ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.menu,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                onPressed: () {},
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                iconSize: 20,
+              ),
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Icon(
+                  Icons.check_circle,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 15),
+        ],
       ),
     );
   }
 }
+
+class _MealInfo {
+  final String recipe;
+  final String mealType;
+
+  _MealInfo(this.recipe, this.mealType);
+}
+
 

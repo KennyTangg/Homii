@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: _getCurrentPage(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
@@ -240,6 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 
 
 

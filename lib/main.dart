@@ -33,6 +33,20 @@ class MainApp extends StatelessWidget {
           outline: Color(0xFF424242),
         ),
       ),
+      darkTheme: ThemeData(
+        colorScheme: const ColorScheme.dark(
+          surface: Color(0xFF121212),
+          onSurface: Colors.white,
+          primary: Color.fromRGBO(100, 150, 97, 1),
+          onPrimary: Colors.white,
+          secondary: Color.fromRGBO(255, 128, 64, 1),
+          onSecondary: Color.fromRGBO(246, 184, 226, 1),
+          tertiary: Color.fromRGBO(255, 215, 64, 1),
+          error: Colors.red,
+          outline: Color(0xFFBDBDBD),
+        ),
+      ),
+      themeMode: ThemeMode.system,
       home: const SplashScreen(),
     );
   }
