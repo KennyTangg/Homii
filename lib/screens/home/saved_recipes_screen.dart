@@ -5,19 +5,22 @@ class SavedRecipesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Saved Recipes',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 16),
@@ -25,20 +28,21 @@ class SavedRecipesScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.search, color: Colors.grey),
+                    Icon(Icons.search, color: colorScheme.outline),
                     const SizedBox(width: 8),
                     Expanded(
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Search by recipe, author, or groceries...',
-                          hintStyle: TextStyle(color: Colors.grey[400]),
+                          hintStyle: TextStyle(color: colorScheme.outline.withOpacity(0.7)),
                           border: InputBorder.none,
                         ),
+                        style: TextStyle(color: colorScheme.onSurface),
                       ),
                     ),
                   ],
@@ -56,7 +60,7 @@ class SavedRecipesScreen extends StatelessWidget {
                   ),
                   itemCount: 6,
                   itemBuilder: (context, index) {
-                    return _buildRecipeCard();
+                    return _buildRecipeCard(context);
                   },
                 ),
               ),
@@ -67,14 +71,19 @@ class SavedRecipesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRecipeCard() {
+  Widget _buildRecipeCard(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: isDarkMode 
+                ? Colors.black.withOpacity(0.2) 
+                : Colors.black.withOpacity(0.05),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -89,7 +98,7 @@ class SavedRecipesScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: isDarkMode ? Colors.grey[800] : Colors.grey[300],
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),
@@ -101,7 +110,7 @@ class SavedRecipesScreen extends StatelessWidget {
                   right: 8,
                   child: Icon(
                     Icons.more_vert,
-                    color: Colors.grey[700],
+                    color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
                   ),
                 ),
               ],
@@ -113,9 +122,12 @@ class SavedRecipesScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Pan-Roasted Honey Garlic Chicken',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.left,
@@ -123,13 +135,19 @@ class SavedRecipesScreen extends StatelessWidget {
                 const SizedBox(height: 5),
                 Text(
                   'Jane Doe',
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                  style: TextStyle(
+                    color: colorScheme.outline,
+                    fontSize: 12,
+                  ),
                   textAlign: TextAlign.left,
                 ),
                 const SizedBox(height: 5),
                 Text(
                   '40 mins · 380 kcals',
-                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                  style: TextStyle(
+                    color: colorScheme.outline,
+                    fontSize: 12,
+                  ),
                   textAlign: TextAlign.left,
                 ),
               ],
@@ -140,5 +158,6 @@ class SavedRecipesScreen extends StatelessWidget {
     );
   }
 }
+
 
 

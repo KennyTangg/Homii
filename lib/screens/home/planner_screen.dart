@@ -5,8 +5,10 @@ class PlannerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -24,7 +26,7 @@ class PlannerScreen extends StatelessWidget {
               Text(
                 'Meal Plan: 2,400 kcal',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: colorScheme.primary,
                   fontSize: 16,
                 ),
               ),
@@ -35,8 +37,8 @@ class PlannerScreen extends StatelessWidget {
                     child: OutlinedButton(
                       onPressed: () {},
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.secondary,
-                        side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                        foregroundColor: colorScheme.secondary,
+                        side: BorderSide(color: colorScheme.secondary),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -52,8 +54,8 @@ class PlannerScreen extends StatelessWidget {
                       icon: const Icon(Icons.add),
                       label: const Text('Auto-add meals'),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.secondary,
-                        side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                        foregroundColor: colorScheme.secondary,
+                        side: BorderSide(color: colorScheme.secondary),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -107,9 +109,11 @@ class PlannerScreen extends StatelessWidget {
   }
 
   Widget _buildMealCard(BuildContext context, String recipe, String mealType) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
@@ -139,9 +143,10 @@ class PlannerScreen extends StatelessWidget {
               children: [
                 Text(
                   recipe,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 5),
@@ -161,7 +166,7 @@ class PlannerScreen extends StatelessWidget {
               IconButton(
                 icon: Icon(
                   Icons.menu,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: colorScheme.secondary,
                 ),
                 onPressed: () {},
                 padding: EdgeInsets.zero,
@@ -173,7 +178,7 @@ class PlannerScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Icon(
                   Icons.check_circle,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: colorScheme.primary,
                   size: 20,
                 ),
               ),
@@ -192,5 +197,6 @@ class _MealInfo {
 
   _MealInfo(this.recipe, this.mealType);
 }
+
 
 

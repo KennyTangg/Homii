@@ -37,14 +37,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       body: _getCurrentPage(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              color: colorScheme.onSurface.withOpacity(0.1),
               blurRadius: 10,
             ),
           ],
@@ -53,10 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          selectedItemColor: Theme.of(context).colorScheme.secondary,
+          backgroundColor: colorScheme.surface,
+          selectedItemColor: colorScheme.secondary,
           unselectedItemColor: Colors.grey,
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
               activeIcon: Icon(Icons.home),
@@ -89,6 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildHomeContent() {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -100,9 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Row(
                   children: [
-                    const CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: Icon(Icons.person, color: Colors.white),
+                    CircleAvatar(
+                      backgroundColor: colorScheme.primary,
+                      child: const Icon(Icons.person, color: Colors.white),
                     ),
                     const SizedBox(width: 10),
                     Column(
@@ -136,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Theme.of(context).colorScheme.outline,
+                fillColor: colorScheme.outline.withOpacity(0.2),
               ),
             ),
             const SizedBox(height: 30),
@@ -189,15 +193,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildRecipeCard(String title, String time, String calories, String author) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Container(
       width: 200,
       margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary,
+        color: colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: colorScheme.onSurface.withOpacity(0.1),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -229,9 +235,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(title, style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
                 const SizedBox(height: 5),
-                Text('$time · $calories', style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 12)),
+                Text('$time · $calories', style: TextStyle(color: colorScheme.outline, fontSize: 12)),
                 const SizedBox(height: 5),
-                Text(author, style: TextStyle(color: Theme.of(context).colorScheme.outline, fontSize: 12)),
+                Text(author, style: TextStyle(color: colorScheme.outline, fontSize: 12)),
               ],
             ),
           ),
@@ -240,6 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 
 
 

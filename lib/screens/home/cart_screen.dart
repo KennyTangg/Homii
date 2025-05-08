@@ -5,22 +5,24 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'My Cart',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+          icon: Icon(Icons.arrow_back_ios, color: colorScheme.onSurface, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -31,10 +33,10 @@ class CartScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  _buildCartItem('Greenfields Milk 800 ml', 'Rp 20.000'),
-                  _buildCartItem('8-pack Carton Eggs', 'Rp 32.000'),
-                  _buildCartItem('Wholegrain Bread 370 gr', 'Rp 17.000'),
-                  _buildCartItem('Button Mushrooms 150 gr', 'Rp 17.000'),
+                  _buildCartItem(context, 'Greenfields Milk 800 ml', 'Rp 20.000'),
+                  _buildCartItem(context, '8-pack Carton Eggs', 'Rp 32.000'),
+                  _buildCartItem(context, 'Wholegrain Bread 370 gr', 'Rp 17.000'),
+                  _buildCartItem(context, 'Button Mushrooms 150 gr', 'Rp 17.000'),
                 ],
               ),
             ),
@@ -47,8 +49,8 @@ class CartScreen extends StatelessWidget {
                 icon: const Icon(Icons.add),
                 label: const Text('Add more items'),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.green,
-                  side: const BorderSide(color: Colors.green),
+                  foregroundColor: colorScheme.primary,
+                  side: BorderSide(color: colorScheme.primary),
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -61,16 +63,16 @@ class CartScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFE67E22),
+                  backgroundColor: colorScheme.secondary,
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Checkout 4 items',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: colorScheme.onSecondary,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -83,12 +85,14 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(String name, String price) {
+  Widget _buildCartItem(BuildContext context, String name, String price) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Row(
@@ -99,9 +103,10 @@ class CartScreen extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
+                  color: colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 5),
@@ -116,7 +121,7 @@ class CartScreen extends StatelessWidget {
           ),
           Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.green),
+              border: Border.all(color: colorScheme.primary),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
@@ -127,15 +132,16 @@ class CartScreen extends StatelessWidget {
                   child: IconButton(
                     padding: EdgeInsets.zero,
                     icon: const Icon(Icons.remove, size: 18),
-                    color: Colors.green,
+                    color: colorScheme.primary,
                     onPressed: () {},
                   ),
                 ),
-                const Text(
+                Text(
                   '1',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(
@@ -144,7 +150,7 @@ class CartScreen extends StatelessWidget {
                   child: IconButton(
                     padding: EdgeInsets.zero,
                     icon: const Icon(Icons.add, size: 18),
-                    color: Colors.green,
+                    color: colorScheme.primary,
                     onPressed: () {},
                   ),
                 ),
@@ -156,5 +162,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
+
+
 
 

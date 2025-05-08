@@ -6,8 +6,10 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -28,9 +30,9 @@ class ShopScreen extends StatelessWidget {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: colorScheme.onPrimary,
                           shape: BoxShape.circle,
-                          border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
+                          border: Border.all(color: colorScheme.primary, width: 2),
                         ),
                         child: IconButton(
                           icon: const Icon(Icons.shopping_cart_outlined),
@@ -43,7 +45,7 @@ class ShopScreen extends StatelessWidget {
                             );
                           },
                           iconSize: 24,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: colorScheme.primary,
                         ),
                       ),
                       Positioned(
@@ -52,13 +54,13 @@ class ShopScreen extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: colorScheme.error,
                             shape: BoxShape.circle,
                           ),
-                          child: const Text(
+                          child: Text(
                             '4',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: colorScheme.onError,
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
                             ),
@@ -72,7 +74,7 @@ class ShopScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextField(
@@ -92,12 +94,12 @@ class ShopScreen extends StatelessWidget {
                   mainAxisSpacing: 15,
                   childAspectRatio: 0.85,
                   children: [
-                    _buildProductCard('Greenfields Milk\n800 ml', 'Rp 20.000'),
-                    _buildProductCard('8-pack Carton Eggs\n', 'Rp 32.000'),
-                    _buildProductCard('Wholegrain Bread\n370 gr', 'Rp 17.000'),
-                    _buildProductCard('Button Mushrooms\n150 gr', 'Rp 15.000'),
-                    _buildProductCard('Organic Spinach\n200 gr', 'Rp 12.000'),
-                    _buildProductCard('Fresh Tomatoes\n500 gr', 'Rp 10.000'),
+                    _buildProductCard(context, 'Greenfields Milk\n800 ml', 'Rp 20.000'),
+                    _buildProductCard(context, '8-pack Carton Egg\n', 'Rp 32.000'),
+                    _buildProductCard(context, 'Wholegrain Bread\n370 gr', 'Rp 17.000'),
+                    _buildProductCard(context, 'Button Mushrooms\n150 gr', 'Rp 15.000'),
+                    _buildProductCard(context, 'Organic Spinach\n200 gr', 'Rp 12.000'),
+                    _buildProductCard(context, 'Fresh Tomatoes\n500 gr', 'Rp 10.000'),
                   ],
                 ),
               ),
@@ -108,10 +110,12 @@ class ShopScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(String name, String price) {
+  Widget _buildProductCard(BuildContext context, String name, String price) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
@@ -148,9 +152,10 @@ class ShopScreen extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -169,6 +174,7 @@ class ShopScreen extends StatelessWidget {
     );
   }
 }
+
 
 
 
