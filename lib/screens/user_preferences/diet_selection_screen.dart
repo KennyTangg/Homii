@@ -85,6 +85,25 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
                   children: diets.map((diet) => _buildDietChip(diet)).toList(),
                 ),
               ),
+              // Progress indicator dots
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < 5; i++)
+                    Container(
+                      width: 8,
+                      height: 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: i == 2 
+                            ? Colors.white 
+                            : Colors.white.withOpacity(0.4),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -135,3 +154,5 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
     );
   }
 }
+
+

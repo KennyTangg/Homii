@@ -75,6 +75,25 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
                   children: diets.map((diet) => _buildDietChip(diet)).toList(),
                 ),
               ),
+              // Progress indicator dots
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < 5; i++)
+                    Container(
+                      width: 8,
+                      height: 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: i == 4 
+                            ? Theme.of(context).colorScheme.primary 
+                            : Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

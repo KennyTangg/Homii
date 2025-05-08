@@ -29,7 +29,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         margin: const EdgeInsets.only(bottom: 8),
         decoration: BoxDecoration(
-          color: Colors.transparent, // Set to transparent
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: Colors.white,
@@ -54,7 +54,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -76,7 +76,26 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   children: goals.map((diet) => _buildDietChip(diet)).toList(),
                 ),
               ),
-              SizedBox(
+              // Progress indicator dots at bottom
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < 5; i++)
+                    Container(
+                      width: 8,
+                      height: 8,
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: i == 1 
+                            ? Colors.white 
+                            : Colors.white.withOpacity(0.4),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: selectedGoal != null
@@ -104,22 +123,25 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    foregroundColor: Color.fromRGBO(69, 121, 66, 1),
+                    disabledBackgroundColor: Colors.white.withOpacity(0.7),
+                    disabledForegroundColor: Color.fromRGBO(69, 121, 66, 0.5),
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
+                    padding: EdgeInsets.symmetric(vertical: 15),
                   ),
                   child: Text(
                     'Continue',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(69, 121, 66, 1)
-
                     ),
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
