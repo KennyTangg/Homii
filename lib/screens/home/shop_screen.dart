@@ -80,6 +80,7 @@ class ShopScreen extends StatelessWidget {
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Search ingredient eg. milk',
+                    hintStyle: TextStyle(color: colorScheme.outline.withOpacity(0.7)),
                     prefixIcon: const Icon(Icons.search),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(vertical: 15),

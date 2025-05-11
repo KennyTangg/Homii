@@ -55,13 +55,14 @@ class _PantryScreenState extends State<PantryScreen> {
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Search pantry items...',
+                  hintStyle: TextStyle(color: colorScheme.outline.withOpacity(0.7)),
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
-                  fillColor: colorScheme.outline.withOpacity(0.2),
+                  fillColor: colorScheme.onPrimary,
                 ),
               ),
               const SizedBox(height: 20),
