@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'edit_meal_plan_screen.dart';
 
 class PlannerScreen extends StatelessWidget {
   const PlannerScreen({super.key});
@@ -35,7 +36,14 @@ class PlannerScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EditMealPlanScreen(),
+                          ),
+                        );
+                      },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: colorScheme.secondary,
                         side: BorderSide(color: colorScheme.secondary),
@@ -197,6 +205,7 @@ class _MealInfo {
 
   _MealInfo(this.recipe, this.mealType);
 }
+
 
 
 

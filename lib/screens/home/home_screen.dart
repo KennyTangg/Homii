@@ -3,6 +3,7 @@ import 'saved_recipes_screen.dart';
 import 'planner_screen.dart';
 import 'pantry_screen.dart';
 import 'shop_screen.dart';
+import '../profile/profile_screen.dart'; // Import the profile screen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -104,30 +105,107 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Row(
                   children: [
-                    CircleAvatar(
-                      backgroundColor: colorScheme.primary,
-                      child: const Icon(Icons.person, color: Colors.white),
+                    // Enhanced profile picture with visual cues
+                    Material(
+                      elevation: 4,
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.hardEdge,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
+                            ),
+                          );
+                        },
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: colorScheme.primary.withOpacity(0.5),
+                              width: 2,
+                            ),
+                          ),
+                          child: Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 24,
+                                backgroundColor: colorScheme.primary,
+                                child: const Icon(Icons.person, color: Colors.white, size: 28),
+                              ),
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.secondary,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: colorScheme.surface,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.arrow_forward,
+                                    size: 10,
+                                    color: colorScheme.onSecondary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'Good morning,',
-                          style: TextStyle(color: Colors.grey),
+                          style: TextStyle(color: colorScheme.outline),
                         ),
-                        Text(
-                          'Lana.',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              'Lana',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.verified,
+                              size: 16,
+                              color: colorScheme.primary,
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ],
                 ),
-                const Icon(Icons.notifications_outlined),
+                Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: colorScheme.outline.withOpacity(0.2),
+                      width: 1,
+                    ),
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.notifications_outlined,
+                      color: colorScheme.onSurface,
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -247,6 +325,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
 
 
 

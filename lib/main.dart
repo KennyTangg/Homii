@@ -2,12 +2,17 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:homii/screens/authentication/splash_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:homii/theme/theme_provider.dart';
 
 void main() {
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode, 
-      builder: (context) => const MainApp(),
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: DevicePreview(
+        enabled: !kReleaseMode, 
+        builder: (context) => const MainApp(),
+      ),
     ),
   );
 }
@@ -17,6 +22,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Homii',
@@ -46,7 +53,7 @@ class MainApp extends StatelessWidget {
           outline: Color(0xFF9CA3AF),
         ),
       ),
-      themeMode: ThemeMode.system,
+      themeMode: themeProvider.themeMode,
       home: const SplashScreen(),
     );
   }
