@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/meal_plan_model.dart';
 
 class EditMealPlanScreen extends StatefulWidget {
   const EditMealPlanScreen({super.key});
@@ -8,45 +9,14 @@ class EditMealPlanScreen extends StatefulWidget {
 }
 
 class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
-  // Sample data - in a real app, this would come from a database
-  final List<DayPlan> _mealPlan = [
-    DayPlan(
-      date: 'Today, 18 March',
-      meals: {
-        'Breakfast': MealItem(name: 'Overnight Oats and Greek Yogurt', isChecked: true),
-        'Lunch': MealItem(name: 'Pan-Roasted Honey Garlic Chicken Thighs', isChecked: true),
-        'Dinner': MealItem(name: '', isChecked: false),
-      },
-      isExpanded: true,
-    ),
-    DayPlan(
-      date: '19 March',
-      meals: {
-        'Breakfast': MealItem(name: 'Overnight Oats and Greek Yogurt', isChecked: true),
-        'Lunch': MealItem(name: 'Pan-Roasted Honey Garlic Chicken Thighs', isChecked: true),
-        'Dinner': MealItem(name: 'Braised Beef Stir Fry', isChecked: true),
-      },
-      isExpanded: true,
-    ),
-    DayPlan(
-      date: '20 March',
-      meals: {
-        'Breakfast': MealItem(name: 'Overnight Oats and Greek Yogurt', isChecked: true),
-        'Lunch': MealItem(name: 'Pan-Roasted Honey Garlic Chicken Thighs', isChecked: true),
-        'Dinner': MealItem(name: 'Braised Beef Stir Fry', isChecked: true),
-      },
-      isExpanded: true,
-    ),
-    DayPlan(
-      date: '21 March',
-      meals: {
-        'Breakfast': MealItem(name: 'Overnight Oats and Greek Yogurt', isChecked: true),
-        'Lunch': MealItem(name: '', isChecked: false),
-        'Dinner': MealItem(name: '', isChecked: false),
-      },
-      isExpanded: false,
-    ),
-  ];
+  final MealPlanModel _mealPlanModel = MealPlanModel();
+  late List<DayPlan> _mealPlan;
+  
+  @override
+  void initState() {
+    super.initState();
+    _mealPlan = _mealPlanModel.mealPlan;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +61,13 @@ class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
         itemCount: _mealPlan.length,
         itemBuilder: (context, index) {
           final day = _mealPlan[index];
-          return _buildDaySection(context, day);
+          return _buildDaySection(context, day, index);
         },
       ),
     );
   }
 
-  Widget _buildDaySection(BuildContext context, DayPlan day) {
+  Widget _buildDaySection(BuildContext context, DayPlan day, int dayIndex) {
     final colorScheme = Theme.of(context).colorScheme;
     
     return Container(
@@ -135,7 +105,7 @@ class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
                   value: day.isAllChecked(),
                   onChanged: (value) {
                     setState(() {
-                      day.toggleAllMeals(value ?? false);
+                      _mealPlanModel.updateDayMeals(dayIndex, value ?? false);
                     });
                   },
                   activeColor: colorScheme.primary,
@@ -151,7 +121,7 @@ class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
             final mealType = entry.key;
             final meal = entry.value;
             
-            return _buildMealItem(context, mealType, meal, day);
+            return _buildMealItem(context, mealType, meal, day, dayIndex);
           }).toList(),
           const SizedBox(height: 8),
         ],
@@ -159,7 +129,7 @@ class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
     );
   }
 
-  Widget _buildMealItem(BuildContext context, String mealType, MealItem meal, DayPlan day) {
+  Widget _buildMealItem(BuildContext context, String mealType, MealItem meal, DayPlan day, int dayIndex) {
     final colorScheme = Theme.of(context).colorScheme;
     final bool isEmpty = meal.name.isEmpty;
     
@@ -225,7 +195,7 @@ class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
               value: meal.isChecked,
               onChanged: (value) {
                 setState(() {
-                  meal.isChecked = value ?? false;
+                  _mealPlanModel.updateMeal(dayIndex, mealType, value ?? false);
                 });
               },
               activeColor: colorScheme.primary,
@@ -240,36 +210,38 @@ class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
   }
 }
 
-class DayPlan {
-  final String date;
-  final Map<String, MealItem> meals;
-  bool isExpanded;
+// DELETE THESE DUPLICATE CLASS DEFINITIONS
+// class DayPlan {
+//   final String date;
+//   final Map<String, MealItem> meals;
+//   bool isExpanded;
+// 
+//   DayPlan({
+//     required this.date,
+//     required this.meals,
+//     this.isExpanded = true,
+//   });
+// 
+//   bool isAllChecked() {
+//     return meals.values.every((meal) => meal.isChecked || meal.name.isEmpty);
+//   }
+// 
+//   void toggleAllMeals(bool value) {
+//     for (var meal in meals.values) {
+//       if (meal.name.isNotEmpty) {
+//         meal.isChecked = value;
+//       }
+//     }
+//   }
+// }
+// 
+// class MealItem {
+//   String name;
+//   bool isChecked;
+// 
+//   MealItem({
+//     required this.name,
+//     required this.isChecked,
+//   });
+// }
 
-  DayPlan({
-    required this.date,
-    required this.meals,
-    this.isExpanded = true,
-  });
-
-  bool isAllChecked() {
-    return meals.values.every((meal) => meal.isChecked || meal.name.isEmpty);
-  }
-
-  void toggleAllMeals(bool value) {
-    for (var meal in meals.values) {
-      if (meal.name.isNotEmpty) {
-        meal.isChecked = value;
-      }
-    }
-  }
-}
-
-class MealItem {
-  String name;
-  bool isChecked;
-
-  MealItem({
-    required this.name,
-    required this.isChecked,
-  });
-}

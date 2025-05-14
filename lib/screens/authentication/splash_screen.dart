@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'welcome_screen.dart';
+import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,14 +12,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _navigateToWelcomeScreen();
+    _navigateToOnboardingScreen();
   }
 
-  _navigateToWelcomeScreen() async {
-    await Future.delayed(Duration(seconds: 1));
+  _navigateToOnboardingScreen() async {
+    await Future.delayed(Duration(seconds: 2));
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => WelcomeScreen()),
+      MaterialPageRoute(builder: (context) => OnboardingScreen()),
     );
   }
 

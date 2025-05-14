@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:homii/screens/user_preferences/intro_screen.dart';
+import 'onboarding_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -8,152 +8,47 @@ class WelcomeScreen extends StatefulWidget {
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateMixin {
-  double dragDistance = 0.0;
-  bool isDragging = false;
-
-  late AnimationController _slideController;
-  late Animation<double> _slideAnimation;
-
-  late AnimationController _arrowController;
-  late Animation<double> _arrowAnimation;
-
+class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
     super.initState();
-
-    _slideController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-
-    // Arrow bounce animation
-    _arrowController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    )..repeat(reverse: true);
-
-    _arrowAnimation = Tween<double>(begin: 0, end: 10).animate(
-      CurvedAnimation(parent: _arrowController, curve: Curves.easeInOut),
-    );
+    _navigateToOnboarding();
   }
 
-  void _animateTo(double end) {
-    final start = dragDistance;
-
-    _slideAnimation = Tween<double>(begin: start, end: end).animate(CurvedAnimation(
-      parent: _slideController,
-      curve: Curves.easeOut,
-    ))
-      ..addListener(() {
-        setState(() {
-          dragDistance = _slideAnimation.value;
-        });
-      });
-
-    _slideController.forward(from: 0);
-  }
-
-  void _handleDragUpdate(DragUpdateDetails details) {
-    setState(() {
-      dragDistance += details.delta.dy;
-      if (dragDistance > 0) dragDistance = 0;
-    });
-  }
-
-  void _handleDragEnd(DragEndDetails details) {
-    final height = MediaQuery.of(context).size.height;
-
-    if (dragDistance.abs() > height / 2 || (details.primaryVelocity ?? 0) < -500) {
-      _animateTo(-height);
-      Future.delayed(const Duration(milliseconds: 300), () {
-        Navigator.of(context).pushReplacement(
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const IntroScreen(),
-            transitionDuration: Duration.zero,
-          ),
-        );
-      });
-    } else {
-      _animateTo(0);
+  _navigateToOnboarding() async {
+    await Future.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+      );
     }
   }
 
   @override
-  void dispose() {
-    _slideController.dispose();
-    _arrowController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      body: Stack(
-        children: [
-          Transform.translate(
-            offset: Offset(0, height + dragDistance),
-            child: IntroScreen(),
-          ),
-          GestureDetector(
-            onVerticalDragStart: (_) => isDragging = true,
-            onVerticalDragUpdate: _handleDragUpdate,
-            onVerticalDragEnd: _handleDragEnd,
-            child: Transform.translate(
-              offset: Offset(0, dragDistance),
-              child: Image.asset(
-                'assets/images/welcome_page_image.png',
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.white,
-                    child: Center(
-                      child: Icon(
-                        Icons.image_not_supported,
-                        size: 50,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                  );
-                },
-              ),
+      backgroundColor: const Color(0xFFF8F3E9), // Cream background color
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/homii_icon.png',
+              height: 50,
             ),
-          ),
-          if (dragDistance == 0)
-            Positioned(
-              bottom: 40,
-              left: 0,
-              right: 0,
-              child: AnimatedBuilder(
-                animation: _arrowAnimation,
-                builder: (context, child) {
-                  return Transform.translate(
-                    offset: Offset(0, _arrowAnimation.value),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.keyboard_arrow_down, size: 30, color: Colors.green[800]),
-                        Text(
-                          "Swipe down to continue",
-                          style: TextStyle(
-                            color: Colors.green[800],
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+            const SizedBox(height: 20),
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.orange[400]!),
             ),
-
-        ],
+          ],
+        ),
       ),
     );
   }
 }
+
+
+
+
+

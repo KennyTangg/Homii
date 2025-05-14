@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:homii/screens/authentication/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:homii/theme/theme_provider.dart';
+import 'package:homii/models/meal_plan_model.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => MealPlanModel()),
+      ],
       child: DevicePreview(
         enabled: !kReleaseMode, 
         builder: (context) => const MainApp(),
