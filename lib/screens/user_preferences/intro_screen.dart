@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:homii/utils/swipe_detector.dart';
 
 import 'goals_screen.dart';
 
@@ -9,7 +10,29 @@ class IntroScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: SafeArea(
+      body: SwipeDetector(
+        onSwipeLeft: () {
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 500),
+              pageBuilder: (context, animation, secondaryAnimation) => GoalsScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                final offsetAnimation = animation.drive(tween);
+
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: child,
+                );
+              },
+            ),
+          );
+        },
+        child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 30),
           child: Align(
@@ -17,26 +40,26 @@ class IntroScreen extends StatelessWidget {
             child: Text(
               "Let's get to know your eating habits.",
               style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.w800,
+                fontSize: 35,
+                fontWeight: FontWeight.w600,
                 color: Theme.of(context).colorScheme.secondary,
                 height: 1.2,// Orange color
               ),
             ),
           ),
         ),
-      ),
+      )),
       floatingActionButton: Stack(
         children: [
           Positioned(
             bottom: 10.0,
             right: 10.0,
-            child: Container(
+            child: SizedBox(
               width: 70,
               height: 70,
               child: FloatingActionButton(
                 onPressed: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     PageRouteBuilder(
                       transitionDuration: Duration(milliseconds: 500),
                       pageBuilder: (context, animation, secondaryAnimation) => GoalsScreen(),

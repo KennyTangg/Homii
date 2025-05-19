@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:homii/screens/user_preferences/diet_selection_screen.dart';
 import '../home/home_screen.dart';
+import 'package:homii/screens/user_preferences/intro_screen.dart';
+import 'package:homii/utils/swipe_detector.dart';
 
 class GoalsScreen extends StatefulWidget {
   const GoalsScreen({super.key});
@@ -33,7 +35,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: Colors.white,
-            width: isSelected ? 2.0 : 1.0  
+            width: isSelected ? 2.0 : 1.0
           ),
         ),
         child: Text(
@@ -52,7 +54,52 @@ class _GoalsScreenState extends State<GoalsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      body: SafeArea(
+      body: SwipeDetector(
+        onSwipeRight: () {
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 500),
+              pageBuilder: (context, animation, secondaryAnimation) => IntroScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(-1.0, 0.0); // Coming from left
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                final offsetAnimation = animation.drive(tween);
+
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: child,
+                );
+              },
+            ),
+          );
+        },
+        onSwipeLeft: () {
+          if (selectedGoal != null) {
+            Navigator.of(context).pushReplacement(
+              PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 500),
+                pageBuilder: (context, animation, secondaryAnimation) => DietSelectionScreen(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0); // Coming from right
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                  final offsetAnimation = animation.drive(tween);
+
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+              ),
+            );
+          }
+        },
+        child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
           child: Column(
@@ -87,20 +134,20 @@ class _GoalsScreenState extends State<GoalsScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: i == 1 
-                            ? Colors.white 
-                            : Colors.white.withOpacity(0.4),
+                        color: i == 1
+                            ? Colors.white
+                            : Colors.white.withAlpha(102), // 0.4 opacity
                       ),
                     ),
                 ],
               ),
               const SizedBox(height: 20),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: selectedGoal != null
                       ? () {
-                          Navigator.of(context).push(
+                          Navigator.of(context).pushReplacement(
                             PageRouteBuilder(
                               transitionDuration: Duration(milliseconds: 500),
                               pageBuilder: (context, animation, secondaryAnimation) => DietSelectionScreen(),
@@ -108,7 +155,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                                 const begin = Offset(1.0, 0.0);
                                 const end = Offset.zero;
                                 const curve = Curves.ease;
-                                
+
                                 final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
                                 final offsetAnimation = animation.drive(tween);
 
@@ -124,7 +171,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Color.fromRGBO(69, 121, 66, 1),
-                    disabledBackgroundColor: Colors.white.withOpacity(0.7),
+                    disabledBackgroundColor: Colors.white.withAlpha(179), // 0.7 opacity
                     disabledForegroundColor: Color.fromRGBO(69, 121, 66, 0.5),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -145,7 +192,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }

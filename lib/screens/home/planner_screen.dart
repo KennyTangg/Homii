@@ -126,26 +126,21 @@ class PlannerScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
-    // Card background color - use surface color in dark mode for better contrast
-    final cardColor = isDarkMode 
-        ? Color.fromARGB(255, 42, 51, 59)  // Darker surface color for cards
-        : Colors.white;
-        
+    // Card background color - match with home screen cards
+    final cardColor = colorScheme.onPrimary; // This matches the home screen cards
+      
     // Text colors
-    final titleColor = isDarkMode 
-        ? Colors.white 
-        : Colors.black87;
-    final subtitleColor = isDarkMode 
-        ? Colors.grey[400] 
-        : Colors.grey[600];
-        
+    final titleColor = colorScheme.onSurface;
+    final subtitleColor = colorScheme.outline;
+      
     // Image placeholder color
     final placeholderColor = isDarkMode 
-        ? Color.fromARGB(255, 30, 38, 44)  // Even darker for placeholder
-        : Colors.grey[200];
+        ? Colors.grey[600]
+        : Colors.grey[300];
     
     return Container(
       height: 80,
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
       decoration: BoxDecoration(
         color: cardColor,
         borderRadius: BorderRadius.circular(10),
@@ -173,52 +168,62 @@ class PlannerScreen extends StatelessWidget {
           const SizedBox(width: 15),
           // Meal details
           Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    meal.name,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: titleColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    meal.mealType ?? 'Meal',
+                    style: TextStyle(
+                      color: subtitleColor,
+                      fontSize: 14,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Right icons
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  meal.name,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: titleColor,
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Icon(
+                    Icons.menu,
+                    color: colorScheme.secondary,
+                    size: 20,
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  meal.mealType ?? 'Meal',
-                  style: TextStyle(
-                    color: subtitleColor,
-                    fontSize: 14,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Icon(
+                    meal.isChecked ? Icons.check_circle : Icons.check_circle_outline,
+                    color: meal.isChecked 
+                        ? colorScheme.primary 
+                        : isDarkMode ? Colors.grey[500] : Colors.grey[400],
+                    size: 20,
                   ),
                 ),
               ],
             ),
-          ),
-          // Right icons
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-                child: Icon(
-                  Icons.menu,
-                  color: colorScheme.secondary,
-                  size: 20,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),
-                child: Icon(
-                  meal.isChecked ? Icons.check_circle : Icons.check_circle_outline,
-                  color: meal.isChecked 
-                      ? colorScheme.primary 
-                      : isDarkMode ? Colors.grey[500] : Colors.grey[400],
-                  size: 20,
-                ),
-              ),
-            ],
           ),
         ],
       ),
@@ -232,11 +237,6 @@ class _MealInfo {
 
   _MealInfo(this.recipe, this.mealType);
 }
-
-
-
-
-
 
 
 

@@ -1,6 +1,6 @@
 name: homii
 description: "A new Flutter project."
-publish_to: 'none' 
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
@@ -25,7 +25,7 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/app_icon.png"
-  
+
 flutter:
   uses-material-design: true
   assets:
@@ -36,3 +36,14 @@ flutter:
     - assets/images/google_icon.png
     - assets/images/facebook_icon.png
     - assets/images/apple_icon.png
+    - assets/images/recipes/
+    - assets/images/recipes/breakfast_skillet_image.png
+    - assets/images/recipes/creamy_yogurt_image.png
+    - assets/images/recipes/duck_orange_image.png
+    - assets/images/recipes/garlic_chicken_image.png
+    - assets/images/recipes/ginger_fish_image.png
+    - assets/images/recipes/onion_carbonara_image.png
+    - assets/images/recipes/oven_risotto_image.png
+    - assets/images/recipes/roasted_duck_image.png
+    - assets/images/recipes/roast_potatoes_image.png
+    - assets/images/recipes/salmon_croquettes_image.png

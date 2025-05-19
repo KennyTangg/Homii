@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:homii/screens/authentication/splash_screen.dart';
+import 'package:homii/screens/user_preferences/health_data_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:homii/theme/theme_provider.dart';
 import 'package:homii/models/meal_plan_model.dart';
@@ -14,7 +15,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => MealPlanModel()),
       ],
       child: DevicePreview(
-        enabled: !kReleaseMode, 
+        enabled: !kReleaseMode,
         builder: (context) => const MainApp(),
       ),
     ),
@@ -27,7 +28,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Homii',
@@ -43,6 +44,7 @@ class MainApp extends StatelessWidget {
           error: Colors.red,
           outline: Color(0xFF111827),
         ),
+        useMaterial3: false, // Disable Material 3 for faster theme switching
       ),
       darkTheme: ThemeData(
         colorScheme: const ColorScheme.dark(
@@ -56,6 +58,7 @@ class MainApp extends StatelessWidget {
           error: Colors.red,
           outline: Color(0xFF9CA3AF),
         ),
+        useMaterial3: false, // Disable Material 3 for faster theme switching
       ),
       themeMode: themeProvider.themeMode,
       home: const SplashScreen(),

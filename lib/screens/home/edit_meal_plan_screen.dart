@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/meal_plan_model.dart';
 
 class EditMealPlanScreen extends StatefulWidget {
@@ -9,12 +10,13 @@ class EditMealPlanScreen extends StatefulWidget {
 }
 
 class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
-  final MealPlanModel _mealPlanModel = MealPlanModel();
+  late MealPlanModel _mealPlanModel;
   late List<DayPlan> _mealPlan;
   
   @override
   void initState() {
     super.initState();
+    _mealPlanModel = Provider.of<MealPlanModel>(context, listen: false);
     _mealPlan = _mealPlanModel.mealPlan;
   }
 
@@ -40,21 +42,6 @@ class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          TextButton(
-            onPressed: () {
-              // Save changes
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Save',
-              style: TextStyle(
-                color: colorScheme.primary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -244,4 +231,9 @@ class _EditMealPlanScreenState extends State<EditMealPlanScreen> {
 //     required this.isChecked,
 //   });
 // }
+
+
+
+
+
 

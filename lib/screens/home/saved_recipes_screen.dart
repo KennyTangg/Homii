@@ -1,20 +1,111 @@
 import 'package:flutter/material.dart';
 
+class Recipe {
+  final String name;
+  final String author;
+  final String cookTime;
+  final String calories;
+  final String imagePath;
+
+  Recipe({
+    required this.name,
+    required this.author,
+    required this.cookTime,
+    required this.calories,
+    required this.imagePath,
+  });
+}
+
 class SavedRecipesScreen extends StatelessWidget {
   const SavedRecipesScreen({super.key});
+
+  // Sample recipe data
+  List<Recipe> get recipes => [
+    Recipe(
+      name: 'Pan-Roasted Honey Garlic Chicken',
+      author: 'Jane Doe',
+      cookTime: '40 mins',
+      calories: '380 kcals',
+      imagePath: 'assets/images/recipes/garlic_chicken_image.png',
+    ),
+    Recipe(
+      name: 'Salmon Croquettes With Dill Sauce',
+      author: 'Caroline Randall',
+      cookTime: '45 mins',
+      calories: '340 kcals',
+      imagePath: 'assets/images/recipes/salmon_croquettes_image.png',
+    ),
+    Recipe(
+      name: 'Roast Bone-In Loin With Potatoes',
+      author: 'Michael Chen',
+      cookTime: '120 mins',
+      calories: '750 kcals',
+      imagePath: 'assets/images/recipes/roast_potatoes_image.png',
+    ),
+    Recipe(
+      name: 'Caramelized Onion Carbonara',
+      author: 'Sophia Martinez',
+      cookTime: '40 mins',
+      calories: '520 kcals',
+      imagePath: 'assets/images/recipes/onion_carbonara_image.png',
+    ),
+    Recipe(
+      name: 'Oven Risotto With Crispy Roasted Mushrooms',
+      author: 'David Kim',
+      cookTime: '50 mins',
+      calories: '410 kcals',
+      imagePath: 'assets/images/recipes/oven_risotto_image.png',
+    ),
+    Recipe(
+      name: 'Baked White Fish With Ginger, Scallions',
+      author: 'Angela Chen',
+      cookTime: '35 mins',
+      calories: '290 kcals',
+      imagePath: 'assets/images/recipes/ginger_fish_image.png',
+    ),
+    Recipe(
+      name: 'Duck a l\'Orange',
+      author: 'Pierre Dubois',
+      cookTime: '90 mins',
+      calories: '680 kcals',
+      imagePath: 'assets/images/recipes/duck_orange_image.png',
+    ),
+    Recipe(
+      name: 'Crisp Roasted Duck',
+      author: 'Thomas Lee',
+      cookTime: '120 mins',
+      calories: '780 kcals',
+      imagePath: 'assets/images/recipes/roasted_duck_image.png',
+    ),
+    Recipe(
+      name: 'Breakfast Skillet',
+      author: 'Jane Doe',
+      cookTime: '25 mins',
+      calories: '520 kcals',
+      imagePath: 'assets/images/recipes/breakfast_skillet_image.png',
+    ),
+    Recipe(
+      name: 'Creamy Homemade Yogurt',
+      author: 'Jane Doe',
+      cookTime: '20 mins',
+      calories: '210 kcals',
+      imagePath: 'assets/images/recipes/creamy_yogurt_image.png',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 8),
               Text(
                 'Saved Recipes',
                 style: TextStyle(
@@ -26,41 +117,55 @@ class SavedRecipesScreen extends StatelessWidget {
               const SizedBox(height: 16),
               // Search bar
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                height: 40,
                 decoration: BoxDecoration(
-                  color: colorScheme.onPrimary,
-                  borderRadius: BorderRadius.circular(30),
+                  color: colorScheme.primary.withAlpha(25),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.search, color: colorScheme.outline),
+                    const SizedBox(width: 12),
+                    Icon(
+                      Icons.search,
+                      color: colorScheme.outline,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: 'Search by recipe, author, or groceries...',
-                          hintStyle: TextStyle(color: colorScheme.outline.withOpacity(0.7)),
+                          hintText: 'Search by recipe, author...',
+                          hintStyle: TextStyle(
+                            color: colorScheme.outline,
+                            fontSize: 14,
+                          ),
                           border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 8),
                         ),
-                        style: TextStyle(color: colorScheme.onSurface),
+                        style: TextStyle(
+                          color: colorScheme.onSurface,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
               // Recipe grid
               Expanded(
                 child: GridView.builder(
+                  padding: const EdgeInsets.only(top: 8),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
                     childAspectRatio: 0.75,
                   ),
-                  itemCount: 6,
+                  itemCount: recipes.length,
                   itemBuilder: (context, index) {
-                    return _buildRecipeCard(context);
+                    return _buildRecipeCard(context, recipes[index]);
                   },
                 ),
               ),
@@ -71,86 +176,94 @@ class SavedRecipesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRecipeCard(BuildContext context) {
+
+
+  Widget _buildRecipeCard(BuildContext context, Recipe recipe) {
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: isDarkMode 
-                ? Colors.black.withOpacity(0.2) 
-                : Colors.black.withOpacity(0.05),
+            color: colorScheme.onSurface.withAlpha(26),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Recipe image
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(8),
+              topRight: Radius.circular(8),
+            ),
+            child: Image.asset(
+              recipe.imagePath,
+              width: double.infinity,
+              height: 115,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[800] : Colors.grey[300],
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
+                  height: 115,
+                  color: isDarkMode ? colorScheme.primary.withAlpha(50) : colorScheme.primary.withAlpha(25),
+                  child: Center(
+                    child: Icon(
+                      Icons.restaurant,
+                      size: 40,
+                      color: colorScheme.primary.withAlpha(150),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Icon(
-                    Icons.more_vert,
-                    color: isDarkMode ? Colors.grey[400] : Colors.grey[700],
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
           // Recipe details
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Pan-Roasted Honey Garlic Chicken',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurface,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    recipe.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                      fontSize: 14,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  'Jane Doe',
-                  style: TextStyle(
-                    color: colorScheme.outline,
-                    fontSize: 12,
+                  const SizedBox(height: 4),
+                  Text(
+                    recipe.author,
+                    style: TextStyle(
+                      color: colorScheme.outline,
+                      fontSize: 12,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.left,
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  '40 mins · 380 kcals',
-                  style: TextStyle(
-                    color: colorScheme.outline,
-                    fontSize: 12,
+                  const SizedBox(height: 4),
+                  Text(
+                    '${recipe.cookTime} · ${recipe.calories}',
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.left,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

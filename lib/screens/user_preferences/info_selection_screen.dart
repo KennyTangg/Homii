@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:homii/screens/home/home_screen.dart';
+import 'package:homii/screens/user_preferences/health_data_screen.dart';
+import 'package:homii/utils/swipe_detector.dart';
 
 class InfoSelectionScreen extends StatefulWidget {
   const InfoSelectionScreen({super.key});
@@ -32,7 +34,7 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: Theme.of(context).colorScheme.primary,
-            width: isSelected ? 2.0 : 1.0  
+            width: isSelected ? 2.0 : 1.0
           ),
         ),
         child: Text(
@@ -51,13 +53,44 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.tertiary,
-      body: SafeArea(
+      body: SwipeDetector(
+        onSwipeRight: () {
+          Navigator.of(context).pushReplacement(
+            PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 500),
+              pageBuilder: (context, animation, secondaryAnimation) => HealthDataScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(-1.0, 0.0); // Coming from left
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                final offsetAnimation = animation.drive(tween);
+
+                return SlideTransition(
+                  position: offsetAnimation,
+                  child: child,
+                );
+              },
+            ),
+          );
+        },
+        onSwipeLeft: () {
+          if (selectedInfo != null) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ),
+            );
+          }
+        },
+        child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'Choose the information you would like to be shown first.',
                 style: TextStyle(
@@ -86,9 +119,9 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: i == 4 
-                            ? Theme.of(context).colorScheme.primary 
-                            : Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                        color: i == 4
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.primary.withAlpha(102), // 0.4 opacity
                       ),
                     ),
                 ],
@@ -108,6 +141,7 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
+                    disabledBackgroundColor: Theme.of(context).colorScheme.primary.withAlpha(77), // 0.3 opacity
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -118,7 +152,9 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.tertiary,
+                      color: selectedInfo != null
+                          ? Theme.of(context).colorScheme.tertiary
+                          : Theme.of(context).colorScheme.tertiary.withAlpha(128), // 0.5 opacity
                     ),
                   ),
                 ),
@@ -126,7 +162,7 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }

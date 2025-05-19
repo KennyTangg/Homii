@@ -64,6 +64,7 @@ class CartScreen extends StatelessWidget {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colorScheme.secondary,
+                  foregroundColor: Colors.white, // Ensuring text is white for better contrast
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -72,8 +73,7 @@ class CartScreen extends StatelessWidget {
                 child: Text(
                   'Checkout 4 items',
                   style: TextStyle(
-                    color: colorScheme.onSecondary,
-                    fontSize: 16,
+                    fontSize: 14, // Reduced from 16 to 14
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -162,6 +162,8 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

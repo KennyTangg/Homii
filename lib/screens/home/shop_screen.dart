@@ -113,6 +113,7 @@ class ShopScreen extends StatelessWidget {
 
   Widget _buildProductCard(BuildContext context, String name, String price) {
     final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     
     return Container(
       decoration: BoxDecoration(
@@ -128,7 +129,7 @@ class ShopScreen extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: isDarkMode ? Colors.grey[600] : Colors.grey[300],
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),

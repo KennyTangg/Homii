@@ -71,7 +71,7 @@ class SignInScreen extends StatelessWidget {
                       const Text(
                         'Hello there!',
                         style: TextStyle(
-                          fontSize: 40,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),
@@ -80,7 +80,7 @@ class SignInScreen extends StatelessWidget {
                       const Text(
                         'Let\'s get started by entering your name, email address and creating a strong password.',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           color: Colors.black54,
                         ),
                       ),
@@ -92,13 +92,15 @@ class SignInScreen extends StatelessWidget {
                           filled: true,
                           fillColor: const Color(0xFFF8F3E9),
                           hintText: 'Name',
+                          hintStyle: const TextStyle(color: Colors.black54),
                           prefixIcon: const Icon(Icons.person_outline, color: Colors.black54),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 15),
                         ),
+                        style: const TextStyle(color: Colors.black87), // Added text style
                       ),
                       const SizedBox(height: 16),
                       
@@ -108,13 +110,16 @@ class SignInScreen extends StatelessWidget {
                           filled: true,
                           fillColor: const Color(0xFFF8F3E9),
                           hintText: 'Email',
+                          hintStyle: const TextStyle(color: Colors.black54),
                           prefixIcon: const Icon(Icons.email_outlined, color: Colors.black54),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 15),
                         ),
+                        style: const TextStyle(color: Colors.black87), // Added text style
+                        keyboardType: TextInputType.emailAddress, // Added email keyboard type
                       ),
                       const SizedBox(height: 16),
                       
@@ -125,13 +130,15 @@ class SignInScreen extends StatelessWidget {
                           filled: true,
                           fillColor: const Color(0xFFF8F3E9),
                           hintText: 'Password',
+                          hintStyle: const TextStyle(color: Colors.black54),
                           prefixIcon: const Icon(Icons.lock_outline, color: Colors.black54),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide.none,
                           ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 15),
                         ),
+                        style: const TextStyle(color: Colors.black87), // Added text style
                       ),
                       const SizedBox(height: 24),
                       
@@ -249,6 +256,9 @@ class SignInScreen extends StatelessWidget {
     );
   }
 }
+
+
+
 
 
 

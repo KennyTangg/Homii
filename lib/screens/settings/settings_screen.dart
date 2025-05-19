@@ -202,6 +202,7 @@ class SettingsScreen extends StatelessWidget {
     
     return GestureDetector(
       onTap: () {
+        // Apply theme change immediately
         themeProvider.setThemeMode(themeMode);
       },
       child: Container(
@@ -299,3 +300,5 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 }
+
+

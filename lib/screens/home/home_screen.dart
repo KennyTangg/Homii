@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: _getCurrentPage(),
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: colorScheme.onSurface.withOpacity(0.1),
+              color: colorScheme.onSurface.withAlpha(26), // 0.1 opacity
               blurRadius: 10,
             ),
           ],
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHomeContent() {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: colorScheme.primary.withOpacity(0.5),
+                              color: colorScheme.primary.withAlpha(128), // 0.5 opacity
                               width: 2,
                             ),
                           ),
@@ -194,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: colorScheme.surface,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: colorScheme.outline.withOpacity(0.2),
+                      color: colorScheme.outline.withAlpha(51), // 0.2 opacity
                       width: 1,
                     ),
                   ),
@@ -212,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
             TextField(
               decoration: InputDecoration(
                 hintText: 'Search for recipes, meals, or groceries...',
-                hintStyle: TextStyle(color: colorScheme.outline.withOpacity(0.7)),
+                hintStyle: TextStyle(color: colorScheme.outline.withAlpha(179)), // 0.7 opacity
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
@@ -273,7 +273,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildRecipeCard(String title, String time, String calories, String author) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: 200,
       margin: const EdgeInsets.only(right: 15),
@@ -282,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.onSurface.withOpacity(0.1),
+            color: colorScheme.onSurface.withAlpha(26), // 0.1 opacity
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -296,8 +297,11 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 height: 120,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/food_corner.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const Positioned(
@@ -325,6 +329,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
+
+
+
 
 
 
