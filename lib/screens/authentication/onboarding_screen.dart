@@ -7,7 +7,7 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F3E9), // Cream background color
+      backgroundColor: Colors.white, // White background as shown in the image
       body: Stack(
         children: [
           // Food illustrations
@@ -16,11 +16,11 @@ class OnboardingScreen extends StatelessWidget {
             left: 0,
             right: 0,
             child: Image.asset(
-              'assets/images/food_illustrations.png', 
+              'assets/images/food_illustrations.png',
               fit: BoxFit.contain,
             ),
           ),
-          
+
           // Main content
           SafeArea(
             child: Padding(
@@ -28,7 +28,7 @@ class OnboardingScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 40),
-                  
+
                   // Logo centered
                   Center(
                     child: Image.asset(
@@ -36,62 +36,40 @@ class OnboardingScreen extends StatelessWidget {
                       height: 30,
                     ),
                   ),
-                  
+
                   const SizedBox(height: 40),
-                  
+
                   // Main heading
-                  Align(
-                    alignment: Alignment.centerLeft,
+                  Center(
                     child: Text(
-                      'Home-cooking\nmade simple\nfor you.',
+                      'Home-cooking\nmade simple.',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 36,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Colors.green[700],
+                        color: Theme.of(context).colorScheme.primary,
                         height: 1.2,
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 20),
-                  
-                  // App brief button
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: () {
-                        // Show app brief
-                      },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: const Size(50, 30),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        alignment: Alignment.centerLeft,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'App brief',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[800],
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(width: 5),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 14,
-                            color: Colors.orange[300],
-                          ),
-                        ],
+
+                  // Description text - centered as shown in the image
+                  Center(
+                    child: Text(
+                      'Homii turns your kitchen into a smart, comforting space where great meals start with what you already have-and anything you\'re missing shows up at your doorstep!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.outline,
+                        height: 1.5,
                       ),
                     ),
                   ),
-                  
+
                   const Spacer(),
-                  
+
                   // Get started button
                   Center(
                     child: ElevatedButton(
@@ -104,15 +82,16 @@ class OnboardingScreen extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange[400],
-                        foregroundColor: Colors.white,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         minimumSize: const Size(double.infinity, 56),
+                        elevation: 0, // No shadow
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28),
                         ),
                       ),
                       child: const Text(
-                        'Get Started',
+                        'Continue',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

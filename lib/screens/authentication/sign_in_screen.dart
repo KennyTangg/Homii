@@ -44,12 +44,12 @@ class SignInScreen extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Image.asset(
-              'assets/images/food_corner.png', 
+              'assets/images/food_corner.png',
               width: double.infinity,
               fit: BoxFit.cover,
             ),
           ),
-          
+
           // White container with rounded top corners
           Expanded(
             flex: 5, // Make this larger to ensure it takes most of the screen
@@ -85,7 +85,7 @@ class SignInScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      
+
                       // Name field
                       TextField(
                         decoration: InputDecoration(
@@ -103,7 +103,7 @@ class SignInScreen extends StatelessWidget {
                         style: const TextStyle(color: Colors.black87), // Added text style
                       ),
                       const SizedBox(height: 16),
-                      
+
                       // Email field
                       TextField(
                         decoration: InputDecoration(
@@ -122,7 +122,7 @@ class SignInScreen extends StatelessWidget {
                         keyboardType: TextInputType.emailAddress, // Added email keyboard type
                       ),
                       const SizedBox(height: 16),
-                      
+
                       // Password field
                       TextField(
                         obscureText: true,
@@ -141,7 +141,7 @@ class SignInScreen extends StatelessWidget {
                         style: const TextStyle(color: Colors.black87), // Added text style
                       ),
                       const SizedBox(height: 24),
-                      
+
                       // Divider with OR
                       Row(
                         children: [
@@ -170,7 +170,7 @@ class SignInScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 24),
-                      
+
                       // Social sign-in buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -192,7 +192,7 @@ class SignInScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 24),
-                      
+
                       // Sign up text
                       Center(
                         child: Row(
@@ -218,7 +218,7 @@ class SignInScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      
+
                       // Continue button
                       ElevatedButton(
                         onPressed: () {
@@ -230,7 +230,7 @@ class SignInScreen extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange[400],
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
                           foregroundColor: Colors.white,
                           minimumSize: const Size(double.infinity, 56),
                           shape: RoundedRectangleBorder(
@@ -238,7 +238,7 @@ class SignInScreen extends StatelessWidget {
                           ),
                         ),
                         child: const Text(
-                          'Continue',
+                          'Log In',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
