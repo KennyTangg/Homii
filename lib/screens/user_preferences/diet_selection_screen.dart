@@ -157,18 +157,7 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
                     ),
                 ],
               ),
-              const SizedBox(height: 10),
-              // Selection counter
-              Center(
-                child: Text(
-                  '${selectedDiets.length}/3 selected',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

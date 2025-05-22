@@ -4,6 +4,7 @@ import 'planner_screen.dart';
 import 'pantry_screen.dart';
 import 'shop_screen.dart';
 import '../profile/profile_screen.dart'; // Import the profile screen
+import '../notifications/notifications_screen.dart'; // Import the notifications screen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -203,7 +204,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       Icons.notifications_outlined,
                       color: colorScheme.onSurface,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NotificationsScreen(),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -273,7 +281,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildRecipeCard(String title, String time, String calories, String author) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       width: 200,
