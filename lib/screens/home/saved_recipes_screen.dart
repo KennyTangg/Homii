@@ -19,7 +19,6 @@ class Recipe {
 class SavedRecipesScreen extends StatelessWidget {
   const SavedRecipesScreen({super.key});
 
-  // Sample recipe data
   List<Recipe> get recipes => [
     Recipe(
       name: 'Pan-Roasted Honey Garlic Chicken',

@@ -1,7 +1,42 @@
 import 'package:flutter/material.dart';
 
+class CartItem {
+  final String name;
+  final String price;
+  final String imagePath;
+
+  CartItem({
+    required this.name,
+    required this.price,
+    required this.imagePath,
+  });
+}
+
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
+  
+  List<CartItem> get cartItems => [
+    CartItem(
+      name: 'Greenfields Milk 800 ml',
+      price: 'Rp 20.000',
+      imagePath: 'assets/images/cart/milk_image.png',
+    ),
+    CartItem(
+      name: '8-pack Carton Eggs',
+      price: 'Rp 32.000',
+      imagePath: 'assets/images/cart/egg_image.png',
+    ),
+    CartItem(
+      name: 'Wholegrain Bread 370 gr',
+      price: 'Rp 17.000',
+      imagePath: 'assets/images/cart/bread_image.png',
+    ),
+    CartItem(
+      name: 'Button Mushrooms 150 gr',
+      price: 'Rp 17.000',
+      imagePath: 'assets/images/cart/mushrooms_image.png',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +66,12 @@ class CartScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: ListView(
-                children: [
-                  _buildCartItem(context, 'Greenfields Milk 800 ml', 'Rp 20.000'),
-                  _buildCartItem(context, '8-pack Carton Eggs', 'Rp 32.000'),
-                  _buildCartItem(context, 'Wholegrain Bread 370 gr', 'Rp 17.000'),
-                  _buildCartItem(context, 'Button Mushrooms 150 gr', 'Rp 17.000'),
-                ],
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                itemCount: cartItems.length,
+                itemBuilder: (context, index) {
+                  return _buildCartItem(context, cartItems[index]);
+                },
               ),
             ),
             Padding(
@@ -85,7 +119,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, String name, String price) {
+  Widget _buildCartItem(BuildContext context, CartItem item) {
     final colorScheme = Theme.of(context).colorScheme;
     
     return Container(
@@ -98,26 +132,38 @@ class CartScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: colorScheme.onSurface,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              item.imagePath,
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.name,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                price,
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 14,
+                const SizedBox(height: 5),
+                Text(
+                  item.price,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 12,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Container(
             decoration: BoxDecoration(

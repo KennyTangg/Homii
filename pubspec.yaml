@@ -47,3 +47,7 @@ flutter:
     - assets/images/recipes/roasted_duck_image.png
     - assets/images/recipes/roast_potatoes_image.png
     - assets/images/recipes/salmon_croquettes_image.png
+    - assets/images/cart/milk_image.png
+    - assets/images/cart/egg_image.png
+    - assets/images/cart/bread_image.png
+    - assets/images/cart/mushrooms_image.png
