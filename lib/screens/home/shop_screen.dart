@@ -1,15 +1,40 @@
 import 'package:flutter/material.dart';
 import 'cart_screen.dart';
+import '../../widgets/custom_search_bar.dart';
+import '../../widgets/custom_notification.dart';
+import '../../services/cart_service.dart';
 
-class ShopScreen extends StatelessWidget {
+class ShopScreen extends StatefulWidget {
   const ShopScreen({super.key});
 
   @override
+  State<ShopScreen> createState() => _ShopScreenState();
+}
+
+class _ShopScreenState extends State<ShopScreen> {
+  final CartService _cartService = CartService();
+
+  @override
+  void initState() {
+    super.initState();
+    _cartService.addListener(_onCartChanged);
+  }
+
+  @override
+  void dispose() {
+    _cartService.removeListener(_onCartChanged);
+    super.dispose();
+  }
+
+  void _onCartChanged() {
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      resizeToAvoidBottomInset: true, // Allow proper keyboard handling
+      backgroundColor: const Color(0xFFF8F3E9), // Cream background
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -24,18 +49,28 @@ class ShopScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
+                      color: Colors.black,
                     ),
                   ),
                   Stack(
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: colorScheme.onPrimary,
+                          color: Colors.white,
                           shape: BoxShape.circle,
-                          border: Border.all(color: colorScheme.primary, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.shopping_cart_outlined),
+                          icon: Icon(
+                            Icons.shopping_cart_outlined,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -45,47 +80,41 @@ class ShopScreen extends StatelessWidget {
                             );
                           },
                           iconSize: 24,
-                          color: colorScheme.primary,
                         ),
                       ),
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            color: colorScheme.error,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            '4',
-                            style: TextStyle(
-                              color: colorScheme.onError,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
+                      if (_cartService.totalItems > 0)
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              '${_cartService.totalItems}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              Container(
-                decoration: BoxDecoration(
-                  color: colorScheme.onPrimary,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search ingredient eg. milk',
-                    hintStyle: TextStyle(color: colorScheme.outline.withOpacity(0.7)),
-                    prefixIcon: const Icon(Icons.search),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 15),
-                  ),
-                ),
+              CustomSearchBar(
+                hintText: 'Search ingredient eg. milk',
+                onChanged: (value) {
+                  // Handle search functionality for ingredients
+                },
+                onSubmitted: (value) {
+                  // Handle search submission for ingredients
+                },
               ),
               const SizedBox(height: 20),
               Expanded(
@@ -95,12 +124,42 @@ class ShopScreen extends StatelessWidget {
                   mainAxisSpacing: 15,
                   childAspectRatio: 0.85,
                   children: [
-                    _buildProductCard(context, 'Greenfields Milk\n800 ml', 'Rp 20.000'),
-                    _buildProductCard(context, '8-pack Carton Egg\n', 'Rp 32.000'),
-                    _buildProductCard(context, 'Wholegrain Bread\n370 gr', 'Rp 17.000'),
-                    _buildProductCard(context, 'Button Mushrooms\n150 gr', 'Rp 15.000'),
-                    _buildProductCard(context, 'Organic Spinach\n200 gr', 'Rp 12.000'),
-                    _buildProductCard(context, 'Fresh Tomatoes\n500 gr', 'Rp 10.000'),
+                    _buildProductCard(
+                      context,
+                      'Greenfields Milk\n800 ml',
+                      'Rp 20.000',
+                      'assets/images/cart/milk_image_shop.png',
+                    ),
+                    _buildProductCard(
+                      context,
+                      '8-pack Carton Eggs',
+                      'Rp 32.000',
+                      'assets/images/cart/egg_image_shop.png',
+                    ),
+                    _buildProductCard(
+                      context,
+                      'Wholegrain Bread\n370 gr',
+                      'Rp 17.000',
+                      'assets/images/cart/bread_image_shop.png',
+                    ),
+                    _buildProductCard(
+                      context,
+                      'Button Mushrooms\n150 gr',
+                      'Rp 15.000',
+                      'assets/images/cart/mushrooms_image_shop.png',
+                    ),
+                    _buildProductCard(
+                      context,
+                      'Cooking Oil\n1 L',
+                      'Rp 25.000',
+                      'assets/images/cart/oil_image_shop.png',
+                    ),
+                    _buildProductCard(
+                      context,
+                      'Sweet Soy Sauce\n275 ml',
+                      'Rp 18.000',
+                      'assets/images/cart/kecap_image_shop.png',
+                    ),
                   ],
                 ),
               ),
@@ -111,14 +170,21 @@ class ShopScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProductCard(BuildContext context, String name, String price) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+  Widget _buildProductCard(BuildContext context, String name, String price, String imagePath) {
+    // Create a unique ID for the product
+    final productId = name.toLowerCase().replaceAll(' ', '_');
+
     return Container(
       decoration: BoxDecoration(
-        color: colorScheme.onPrimary,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,11 +194,22 @@ class ShopScreen extends StatelessWidget {
               children: [
                 Container(
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey[600] : Colors.grey[300],
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    ),
+                  ),
+                  child: ClipRRect(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),
+                    ),
+                    child: Image.asset(
+                      imagePath,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                   ),
                 ),
@@ -142,6 +219,7 @@ class ShopScreen extends StatelessWidget {
                   child: Icon(
                     Icons.more_vert,
                     color: Colors.grey[600],
+                    size: 20,
                   ),
                 ),
               ],
@@ -154,19 +232,59 @@ class ShopScreen extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
-                    color: colorScheme.onSurface,
+                    color: Colors.black,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  price,
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 14,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      price,
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        final cartItem = CartItem(
+                          id: productId,
+                          name: name,
+                          price: price,
+                          imagePath: imagePath,
+                        );
+                        _cartService.addItem(cartItem);
+
+                        // Show custom notification with slide animation
+                        CustomNotification.show(
+                          context,
+                          message: '$name added to cart',
+                          duration: const Duration(seconds: 2),
+                          icon: Icons.shopping_cart,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.secondary,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

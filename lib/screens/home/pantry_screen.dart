@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_search_bar.dart';
 
 class PantryScreen extends StatefulWidget {
   const PantryScreen({super.key});
@@ -115,18 +116,14 @@ class _PantryScreenState extends State<PantryScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search pantry items...',
-                        hintStyle: TextStyle(color: colorScheme.outline.withAlpha(179)), // 0.7 opacity
-                        prefixIcon: const Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide.none,
-                        ),
-                        filled: true,
-                        fillColor: colorScheme.onPrimary,
-                      ),
+                    CustomSearchBar(
+                      hintText: 'Search pantry items...',
+                      onChanged: (value) {
+                        // Handle search functionality for pantry items
+                      },
+                      onSubmitted: (value) {
+                        // Handle search submission for pantry items
+                      },
                     ),
                     const SizedBox(height: 20),
 

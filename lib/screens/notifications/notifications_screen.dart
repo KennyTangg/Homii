@@ -17,21 +17,21 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       type: 'comment',
       username: 'Seola',
       postTitle: 'tried this, soo yummy!!!',
-      timestamp: DateTime.now().subtract(const Duration(hours: 2)),
+      timestamp: DateTime.now(),
     ),
     NotificationModel(
       id: '2',
       type: 'like',
       username: 'Seola',
       postTitle: 'Baked Crunchy Hot Honey Chicken',
-      timestamp: DateTime.now().subtract(const Duration(hours: 4)),
+      timestamp: DateTime.now(),
     ),
     NotificationModel(
       id: '3',
       type: 'like',
       username: 'Nicole',
       postTitle: 'Baked Crunchy Hot Honey Chicken',
-      timestamp: DateTime.now().subtract(const Duration(hours: 6)),
+      timestamp: DateTime.now(),
     ),
 
     // Yesterday's notifications
@@ -40,28 +40,28 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       type: 'like',
       username: 'Stacey',
       postTitle: 'Baked Crunchy Hot Honey Chicken',
-      timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 2)),
+      timestamp: DateTime.now().subtract(const Duration(hours: 2)),
     ),
     NotificationModel(
       id: '5',
       type: 'like',
       username: 'Randy',
       postTitle: 'Baked Crunchy Hot Honey Chicken',
-      timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 4)),
+      timestamp: DateTime.now().subtract(const Duration(hours: 4)),
     ),
     NotificationModel(
       id: '6',
       type: 'like',
       username: 'Andy',
       postTitle: 'Baked Crunchy Hot Honey Chicken',
-      timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 6)),
+      timestamp: DateTime.now().subtract(const Duration(hours: 6)),
     ),
     NotificationModel(
       id: '7',
       type: 'comment',
       username: 'Andy',
       postTitle: 'Delicious, but a bit dry.',
-      timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 8)),
+      timestamp: DateTime.now().subtract(const Duration( hours: 8)),
     ),
   ];
 

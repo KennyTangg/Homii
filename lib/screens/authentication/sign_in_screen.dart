@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../user_preferences/intro_screen.dart';
+import 'sign_up_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -11,15 +12,15 @@ class SignInScreen extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        width: 50,
-        height: 50,
+        width: 44,
+        height: 44,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 6,
               offset: const Offset(0, 2),
             ),
           ],
@@ -27,7 +28,7 @@ class SignInScreen extends StatelessWidget {
         child: Center(
           child: Image.asset(
             iconPath,
-            height: 24,
+            height: 20,
           ),
         ),
       ),
@@ -69,7 +70,7 @@ class SignInScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Hello there!',
+                        'Welcome back!',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -78,31 +79,13 @@ class SignInScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       const Text(
-                        'Let\'s get started by entering your name, email address and creating a strong password.',
+                        'Access your account by entering your email and password below.',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black54,
                         ),
                       ),
                       const SizedBox(height: 24),
-
-                      // Name field
-                      TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: const Color(0xFFF8F3E9),
-                          hintText: 'Name',
-                          hintStyle: const TextStyle(color: Colors.black54),
-                          prefixIcon: const Icon(Icons.person_outline, color: Colors.black54),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 15),
-                        ),
-                        style: const TextStyle(color: Colors.black87), // Added text style
-                      ),
-                      const SizedBox(height: 16),
 
                       // Email field
                       TextField(
@@ -118,8 +101,8 @@ class SignInScreen extends StatelessWidget {
                           ),
                           contentPadding: const EdgeInsets.symmetric(vertical: 15),
                         ),
-                        style: const TextStyle(color: Colors.black87), // Added text style
-                        keyboardType: TextInputType.emailAddress, // Added email keyboard type
+                        style: const TextStyle(color: Colors.black87),
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 16),
 
@@ -138,7 +121,23 @@ class SignInScreen extends StatelessWidget {
                           ),
                           contentPadding: const EdgeInsets.symmetric(vertical: 15),
                         ),
-                        style: const TextStyle(color: Colors.black87), // Added text style
+                        style: const TextStyle(color: Colors.black87),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Forgot password
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Forgot password?',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 24),
 
@@ -179,12 +178,12 @@ class SignInScreen extends StatelessWidget {
                             onPressed: () {},
                             iconPath: 'assets/images/google_icon.png',
                           ),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 16),
                           _buildSocialButton(
                             onPressed: () {},
                             iconPath: 'assets/images/facebook_icon.png',
                           ),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 16),
                           _buildSocialButton(
                             onPressed: () {},
                             iconPath: 'assets/images/apple_icon.png',
@@ -204,7 +203,12 @@ class SignInScreen extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                // Handle sign up
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignUpScreen(),
+                                  ),
+                                );
                               },
                               child: Text(
                                 'Sign up',
@@ -232,15 +236,15 @@ class SignInScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).colorScheme.secondary,
                           foregroundColor: Colors.white,
-                          minimumSize: const Size(double.infinity, 56),
+                          minimumSize: const Size(double.infinity, 48),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(28),
+                            borderRadius: BorderRadius.circular(24),
                           ),
                         ),
                         child: const Text(
-                          'Log In',
+                          'Log in',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

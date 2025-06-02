@@ -37,8 +37,7 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
           if (isSelected) {
             // If already selected, remove it
             selectedDiets.remove(label);
-          } else if (selectedDiets.length < 3) {
-            // If not selected and less than 3 items are selected, add it
+          } else if (selectedDiets.length < 1) {
             selectedDiets.add(label);
           }
         });

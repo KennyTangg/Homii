@@ -172,16 +172,6 @@ class SettingsScreen extends StatelessWidget {
                     themeProvider,
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildThemeOption(
-                    context,
-                    'System',
-                    Icons.settings_outlined,
-                    ThemeMode.system,
-                    themeProvider,
-                  ),
-                ),
               ],
             ),
           ],

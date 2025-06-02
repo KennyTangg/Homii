@@ -1,42 +1,118 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'edit_meal_plan_screen.dart';
-import '../../models/meal_plan_model.dart';
+
+class PlannerMeal {
+  final String name;
+  final String mealType;
+  final String imagePath;
+  final bool isCompleted;
+
+  PlannerMeal({
+    required this.name,
+    required this.mealType,
+    required this.imagePath,
+    this.isCompleted = false,
+  });
+}
+
+class PlannerDay {
+  final String date;
+  final List<PlannerMeal> meals;
+
+  PlannerDay({
+    required this.date,
+    required this.meals,
+  });
+}
 
 class PlannerScreen extends StatelessWidget {
   const PlannerScreen({super.key});
 
+  List<PlannerDay> get mealPlan => [
+    PlannerDay(
+      date: 'Today, 18 March',
+      meals: [
+        PlannerMeal(
+          name: 'Overnight Oats and Greek Yogurt',
+          mealType: 'Breakfast',
+          imagePath: 'assets/images/planner/oat_greek_planner.png',
+          isCompleted: false,
+        ),
+        PlannerMeal(
+          name: 'Pan-Roasted Honey Garlic Chicken Thighs',
+          mealType: 'Lunch',
+          imagePath: 'assets/images/planner/honey_garlic_planner.png',
+          isCompleted: true,
+        ),
+      ],
+    ),
+    PlannerDay(
+      date: 'Tomorrow, 19 March',
+      meals: [
+        PlannerMeal(
+          name: 'Classic Avocado Toast',
+          mealType: 'Breakfast',
+          imagePath: 'assets/images/planner/avocado_toast_planner.png',
+          isCompleted: true,
+        ),
+        PlannerMeal(
+          name: 'Creamy Garlic Chicken',
+          mealType: 'Lunch',
+          imagePath: 'assets/images/planner/garlic_chicken_planner.png',
+          isCompleted: true,
+        ),
+        PlannerMeal(
+          name: 'Braised Beef Stir Fry',
+          mealType: 'Dinner',
+          imagePath: 'assets/images/planner/beef_stir_planner.png',
+          isCompleted: true,
+        ),
+      ],
+    ),
+    PlannerDay(
+      date: '20 March',
+      meals: [
+        PlannerMeal(
+          name: 'Overnight Oats and Greek Yogurt',
+          mealType: 'Breakfast',
+          imagePath: 'assets/images/planner/oat_greek_planner.png',
+          isCompleted: false,
+        ),
+      ],
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final mealPlanModel = Provider.of<MealPlanModel>(context);
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xFFF8F3E9), // Cream background to match design
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              // Header
+              const Text(
                 'Planner',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 5),
-              Text(
+              const Text(
                 'Meal Plan: 2,400 kcal',
                 style: TextStyle(
-                  color: colorScheme.primary,
+                  color: Color(0xFF8B4513), // Brown color to match design
                   fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
+
+              // Action buttons
               Row(
                 children: [
                   Expanded(
@@ -50,27 +126,27 @@ class PlannerScreen extends StatelessWidget {
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: colorScheme.secondary,
-                        side: BorderSide(color: colorScheme.secondary),
+                        foregroundColor: const Color(0xFFE67E22), // Orange color
+                        side: const BorderSide(color: Color(0xFFE67E22)),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(25),
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                       child: const Text('Edit meal plan'),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.add),
+                      icon: const Icon(Icons.add, size: 18),
                       label: const Text('Auto-add meals'),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: colorScheme.secondary,
-                        side: BorderSide(color: colorScheme.secondary),
+                        foregroundColor: const Color(0xFFE67E22), // Orange color
+                        side: const BorderSide(color: Color(0xFFE67E22)),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(25),
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
@@ -78,148 +154,147 @@ class PlannerScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 25),
-              
-              // Display meal plan days
-              ...mealPlanModel.mealPlan.map((day) {
-                final meals = day.getFilledMeals();
-                if (meals.isEmpty) return const SizedBox.shrink();
-                
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 25),
-                  child: _buildDaySection(context, day.date, meals),
-                );
-              }).toList(),
-              
               const SizedBox(height: 30),
+
+              // Display meal plan days
+              ...mealPlan.map((day) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: _buildDaySection(context, day),
+                );
+              }),
+
+              // Floating Action Button positioned at bottom right
+              const SizedBox(height: 80), // Space for FAB
             ],
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add new meal functionality
+        },
+        backgroundColor: const Color(0xFF4CAF50), // Green color from design
+        child: const Icon(
+          Icons.restaurant,
+          color: Colors.white,
         ),
       ),
     );
   }
 
-  Widget _buildDaySection(BuildContext context, String date, List<MealItem> meals) {
-    final colorScheme = Theme.of(context).colorScheme;
-    
+  Widget _buildDaySection(BuildContext context, PlannerDay day) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          date,
-          style: TextStyle(
+          day.date,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: colorScheme.onSurface,
+            color: Colors.black,
           ),
         ),
-        const SizedBox(height: 10),
-        ...meals.map((meal) => Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+        const SizedBox(height: 15),
+        ...day.meals.map((meal) => Padding(
+          padding: const EdgeInsets.only(bottom: 12),
           child: _buildMealCard(context, meal),
-        )).toList(),
+        )),
       ],
     );
   }
 
-  Widget _buildMealCard(BuildContext context, MealItem meal) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
-    // Card background color - match with home screen cards
-    final cardColor = colorScheme.onPrimary; // This matches the home screen cards
-      
-    // Text colors
-    final titleColor = colorScheme.onSurface;
-    final subtitleColor = colorScheme.outline;
-      
-    // Image placeholder color
-    final placeholderColor = isDarkMode 
-        ? Colors.grey[600]
-        : Colors.grey[300];
-    
+  Widget _buildMealCard(BuildContext context, PlannerMeal meal) {
     return Container(
       height: 80,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
       decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
-          if (!isDarkMode) BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 5,
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 8,
             offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Row(
         children: [
-          // Left gray area (placeholder for image)
-          Container(
-            width: 80,
-            decoration: BoxDecoration(
-              color: placeholderColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
+          // Meal image
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(12),
+              bottomLeft: Radius.circular(12),
+            ),
+            child: Image.asset(
+              meal.imagePath,
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 80,
+                  height: 80,
+                  color: Colors.grey[300],
+                  child: const Icon(
+                    Icons.restaurant,
+                    color: Colors.grey,
+                    size: 30,
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(width: 15),
           // Meal details
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    meal.name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: titleColor,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  meal.name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    meal.mealType ?? 'Meal',
-                    style: TextStyle(
-                      color: subtitleColor,
-                      fontSize: 14,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  meal.mealType,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           // Right icons
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: const EdgeInsets.only(right: 15.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(top: 12.0),
                   child: Icon(
-                    Icons.menu,
-                    color: colorScheme.secondary,
+                    Icons.drag_handle,
+                    color: Colors.grey[400],
                     size: 20,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
+                  padding: const EdgeInsets.only(bottom: 12.0),
                   child: Icon(
-                    meal.isChecked ? Icons.check_circle : Icons.check_circle_outline,
-                    color: meal.isChecked 
-                        ? colorScheme.primary 
-                        : isDarkMode ? Colors.grey[500] : Colors.grey[400],
-                    size: 20,
+                    meal.isCompleted ? Icons.check_circle : Icons.check_circle_outline,
+                    color: meal.isCompleted
+                        ? const Color(0xFF4CAF50)
+                        : Colors.grey[400],
+                    size: 24,
                   ),
                 ),
               ],
@@ -229,13 +304,6 @@ class PlannerScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class _MealInfo {
-  final String recipe;
-  final String mealType;
-
-  _MealInfo(this.recipe, this.mealType);
 }
 
 

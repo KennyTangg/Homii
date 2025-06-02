@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_search_bar.dart';
 
 class Recipe {
   final String name;
@@ -97,6 +98,7 @@ class SavedRecipesScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
@@ -115,41 +117,14 @@ class SavedRecipesScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               // Search bar
-              Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  color: colorScheme.primary.withAlpha(25),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    const SizedBox(width: 12),
-                    Icon(
-                      Icons.search,
-                      color: colorScheme.outline,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search by recipe, author...',
-                          hintStyle: TextStyle(
-                            color: colorScheme.outline,
-                            fontSize: 14,
-                          ),
-                          border: InputBorder.none,
-                          isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(vertical: 8),
-                        ),
-                        style: TextStyle(
-                          color: colorScheme.onSurface,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              CustomSearchBar(
+                hintText: 'Search by recipe, author...',
+                onChanged: (value) {
+                  // Handle search functionality for recipes
+                },
+                onSubmitted: (value) {
+                  // Handle search submission for recipes
+                },
               ),
               const SizedBox(height: 16),
               // Recipe grid

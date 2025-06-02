@@ -1,42 +1,31 @@
 import 'package:flutter/material.dart';
+import '../../services/cart_service.dart';
 
-class CartItem {
-  final String name;
-  final String price;
-  final String imagePath;
+class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
 
-  CartItem({
-    required this.name,
-    required this.price,
-    required this.imagePath,
-  });
+  @override
+  State<CartScreen> createState() => _CartScreenState();
 }
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
-  
-  List<CartItem> get cartItems => [
-    CartItem(
-      name: 'Greenfields Milk 800 ml',
-      price: 'Rp 20.000',
-      imagePath: 'assets/images/cart/milk_image.png',
-    ),
-    CartItem(
-      name: '8-pack Carton Eggs',
-      price: 'Rp 32.000',
-      imagePath: 'assets/images/cart/egg_image.png',
-    ),
-    CartItem(
-      name: 'Wholegrain Bread 370 gr',
-      price: 'Rp 17.000',
-      imagePath: 'assets/images/cart/bread_image.png',
-    ),
-    CartItem(
-      name: 'Button Mushrooms 150 gr',
-      price: 'Rp 17.000',
-      imagePath: 'assets/images/cart/mushrooms_image.png',
-    ),
-  ];
+class _CartScreenState extends State<CartScreen> {
+  final CartService _cartService = CartService();
+
+  @override
+  void initState() {
+    super.initState();
+    _cartService.addListener(_onCartChanged);
+  }
+
+  @override
+  void dispose() {
+    _cartService.removeListener(_onCartChanged);
+    super.dispose();
+  }
+
+  void _onCartChanged() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +55,43 @@ class CartScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                itemCount: cartItems.length,
-                itemBuilder: (context, index) {
-                  return _buildCartItem(context, cartItems[index]);
-                },
-              ),
+              child: _cartService.items.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.shopping_cart_outlined,
+                            size: 80,
+                            color: colorScheme.outline.withValues(alpha: 0.5),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Your cart is empty',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: colorScheme.outline,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Add some items to get started',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: colorScheme.outline.withValues(alpha: 0.7),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      itemCount: _cartService.items.length,
+                      itemBuilder: (context, index) {
+                        return _buildCartItem(context, _cartService.items[index]);
+                      },
+                    ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -105,8 +124,8 @@ class CartScreen extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Checkout 4 items',
-                  style: TextStyle(
+                  'Checkout ${_cartService.formattedTotalPrice}',
+                  style: const TextStyle(
                     fontSize: 14, // Reduced from 16 to 14
                     fontWeight: FontWeight.bold,
                   ),
@@ -172,32 +191,66 @@ class CartScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    icon: const Icon(Icons.remove, size: 18),
-                    color: colorScheme.primary,
-                    onPressed: () {},
+                Tooltip(
+                  message: item.quantity == 1 ? 'Remove item from cart' : 'Decrease quantity',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: () {
+                        _cartService.decrementQuantity(item.id);
+                      },
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Icon(
+                          Icons.remove,
+                          size: 18,
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  '1',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: colorScheme.onSurface,
+                Container(
+                  width: 40,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${item.quantity}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
                 ),
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    icon: const Icon(Icons.add, size: 18),
-                    color: colorScheme.primary,
-                    onPressed: () {},
+                Tooltip(
+                  message: item.quantity >= 99 ? 'Maximum quantity reached (99)' : 'Add item',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: item.quantity < 99 ? () {
+                        _cartService.incrementQuantity(item.id);
+                      } : null,
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Icon(
+                          Icons.add,
+                          size: 18,
+                          color: item.quantity < 99
+                              ? colorScheme.primary
+                              : colorScheme.outline.withValues(alpha: 0.5),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],

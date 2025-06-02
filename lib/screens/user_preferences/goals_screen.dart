@@ -17,14 +17,17 @@ class _GoalsScreenState extends State<GoalsScreen> {
     'Meal prep', 'Quick meals', 'Budget-friendly', 'Low-calorie',
   ];
 
-  String? selectedGoal;
-
+  final List<String> selectedGoals = [];
   Widget _buildDietChip(String label) {
-    final isSelected = selectedGoal == label;
+    final isSelected = selectedGoals.contains(label);
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedGoal = isSelected ? null : label;
+          if (isSelected) {
+            selectedGoals.remove(label);
+          } else if (selectedGoals.length < 3) {
+            selectedGoals.add(label);
+          }
         });
       },
       child: Container(
@@ -77,7 +80,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
           );
         },
         onSwipeLeft: () {
-          if (selectedGoal != null) {
+          if (selectedGoals != null) {
             Navigator.of(context).pushReplacement(
               PageRouteBuilder(
                 transitionDuration: Duration(milliseconds: 500),
@@ -145,7 +148,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: selectedGoal != null
+                  onPressed: selectedGoals != null
                       ? () {
                           Navigator.of(context).pushReplacement(
                             PageRouteBuilder(

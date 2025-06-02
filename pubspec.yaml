@@ -29,6 +29,7 @@ flutter_launcher_icons:
 flutter:
   uses-material-design: true
   assets:
+    - assets/app_icon.png
     - assets/images/
     - assets/images/homii_icon.png
     - assets/images/food_illustrations.png
@@ -47,7 +48,23 @@ flutter:
     - assets/images/recipes/roasted_duck_image.png
     - assets/images/recipes/roast_potatoes_image.png
     - assets/images/recipes/salmon_croquettes_image.png
+    - assets/images/home/
+    - assets/images/home/fish.png
+    - assets/images/home/honey_garlic.png
+    - assets/images/home/oats_greek.png
+    - assets/images/home/salmon.png
     - assets/images/cart/milk_image.png
     - assets/images/cart/egg_image.png
     - assets/images/cart/bread_image.png
     - assets/images/cart/mushrooms_image.png
+    - assets/images/cart/milk_image_shop.png
+    - assets/images/cart/egg_image_shop.png
+    - assets/images/cart/bread_image_shop.png
+    - assets/images/cart/mushrooms_image_shop.png
+    - assets/images/cart/oil_image_shop.png
+    - assets/images/cart/kecap_image_shop.png
+    - assets/images/planner/avocado_toast_planner.png
+    - assets/images/planner/beef_stir_planner.png
+    - assets/images/planner/garlic_chicken_planner.png
+    - assets/images/planner/honey_garlic_planner.png
+    - assets/images/planner/oat_greek_planner.png

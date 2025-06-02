@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:homii/screens/profile/profile_screen.dart';
 import 'saved_recipes_screen.dart';
 import 'planner_screen.dart';
 import 'pantry_screen.dart';
 import 'shop_screen.dart';
-import '../profile/profile_screen.dart'; // Import the profile screen
 import '../notifications/notifications_screen.dart'; // Import the notifications screen
+import '../../widgets/custom_search_bar.dart';
+import '../../widgets/slide_page_route.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: colorScheme.surface,
       body: _getCurrentPage(),
       bottomNavigationBar: Container(
@@ -166,25 +169,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           'Good morning,',
-                          style: TextStyle(color: colorScheme.outline),
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              'Lana',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onSurface,
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            Icon(
-                              Icons.verified,
-                              size: 16,
-                              color: colorScheme.primary,
-                            ),
-                          ],
+                        Text(
+                          'Lana.',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
                         ),
                       ],
                     ),
@@ -192,12 +188,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: colorScheme.surface,
+                    color: Colors.white,
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: colorScheme.outline.withAlpha(51), // 0.2 opacity
-                      width: 1,
-                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: IconButton(
                     icon: Icon(
@@ -207,8 +206,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const NotificationsScreen(),
+                        SlidePageRoute(
+                          child: const NotificationsScreen(),
+                          direction: SlideDirection.rightToLeft,
                         ),
                       );
                     },
@@ -217,18 +217,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 20),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Search for recipes, meals, or groceries...',
-                hintStyle: TextStyle(color: colorScheme.outline.withAlpha(179)), // 0.7 opacity
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: colorScheme.onPrimary,
-              ),
+            CustomSearchBar(
+              hintText: 'Search for recipes, meals, or groceries...',
+              onChanged: (value) {
+                // Handle search functionality
+              },
+              onSubmitted: (value) {
+                // Handle search submission
+              },
             ),
             const SizedBox(height: 30),
             Expanded(
@@ -238,15 +234,40 @@ class _HomeScreenState extends State<HomeScreen> {
                     _buildSection(
                       'Popular Recipes',
                       [
-                        _buildRecipeCard('Pan-Roasted Honey Garlic Chicken Thighs', '40 mins', '380 kcals', 'Jane Doe'),
-                        _buildRecipeCard('Pan-Roasted Chicken Thighs', '35 mins', '350 kcals', 'Jane Doe'),
+                        _buildRecipeCard(
+                          'Pan-Roasted Honey Garlic Chicken Thighs',
+                          '40 mins',
+                          '380 kcals',
+                          'Jane Doe',
+                          'assets/images/home/honey_garlic.png',
+                        ),
+                        _buildRecipeCard(
+                          'Salmon Croquettes with Dill Sauce',
+                          '25 mins',
+                          '320 kcals',
+                          'Caroline Randall',
+                          'assets/images/home/salmon.png',
+                        ),
                       ],
                     ),
                     const SizedBox(height: 30),
                     _buildSection(
                       'Healthy Eats',
                       [
-                        _buildRecipeCard('Grilled Salmon with Vegetables', '25 mins', '300 kcals', 'John Doe'),
+                        _buildRecipeCard(
+                          'Greek Yogurt with Berries',
+                          '5 mins',
+                          '180 kcals',
+                          'Health Chef',
+                          'assets/images/home/oats_greek.png',
+                        ),
+                        _buildRecipeCard(
+                          'Grilled Fish with Herbs',
+                          '20 mins',
+                          '250 kcals',
+                          'Chef Maria',
+                          'assets/images/home/fish.png',
+                        ),
                       ],
                     ),
                   ],
@@ -279,19 +300,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildRecipeCard(String title, String time, String calories, String author) {
-    final colorScheme = Theme.of(context).colorScheme;
-
+  Widget _buildRecipeCard(String title, String time, String calories, String author, String imagePath) {
     return Container(
       width: 200,
       margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
-        color: colorScheme.onPrimary,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.onSurface.withAlpha(26), // 0.1 opacity
-            blurRadius: 5,
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 8,
             offset: const Offset(0, 2),
           ),
         ],
@@ -305,33 +324,90 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 120,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/recipes/garlic_chicken_image.png'),
+                  image: DecorationImage(
+                    image: AssetImage(imagePath),
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-              const Positioned(
+              Positioned(
                 top: 10,
                 right: 10,
-                child: Icon(Icons.favorite_border, color: Colors.white),
+                child: _buildFavoriteIcon(),
               ),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
-                const SizedBox(height: 5),
-                Text('$time · $calories', style: TextStyle(color: colorScheme.outline, fontSize: 12)),
-                const SizedBox(height: 5),
-                Text(author, style: TextStyle(color: colorScheme.outline, fontSize: 12)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '$time · $calories',
+                  style: const TextStyle(
+                    color: Color(0xFF457942), // Green color for time and calories
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  author,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFavoriteIcon() {
+    return _FavoriteIcon();
+  }
+}
+
+class _FavoriteIcon extends StatefulWidget {
+  @override
+  _FavoriteIconState createState() => _FavoriteIconState();
+}
+
+class _FavoriteIconState extends State<_FavoriteIcon> {
+  bool isFavorite = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isFavorite = !isFavorite;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.9),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          isFavorite ? Icons.favorite : Icons.favorite_border,
+          color: isFavorite ? Colors.red : Colors.grey[600],
+          size: 18,
+        ),
       ),
     );
   }
