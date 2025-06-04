@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/custom_search_bar.dart';
+import 'recipe_details.dart';
 
 class Recipe {
   final String name;
@@ -160,7 +161,38 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
                   ),
                   itemCount: _filteredRecipes.length,
                   itemBuilder: (context, index) {
-                    return _buildRecipeCard(context, _filteredRecipes[index]);
+                    return GestureDetector(
+                      onTap: () {
+                        String recipeId = '';
+                        // Map the recipe name to the corresponding ID
+                        Map<String, String> recipeNameToId = {
+                          'Pan-Roasted Honey Garlic Chicken': 'honey-garlic-chicken',
+                          'Salmon Croquettes With Dill Sauce': 'salmon-croquettes',
+                          'Caramelized Onion Carbonara': 'onion-carbonara',
+                          'Roast Bone-In Loin With Potatoes': 'roast-bone-in-loin',
+                          'Oven Risotto With Crispy Roasted Mushrooms': 'oven-risotto',
+                          'Baked White Fish With Ginger, Scallions': 'ginger-fish',
+                          'Duck a l\'Orange\n': 'duck-orange',
+                          'Crisp Roasted Duck\n': 'roasted-duck',
+                          'Breakfast Skillet\n': 'breakfast-skillet',
+                          'Creamy Homemade Yogurt': 'creamy-yogurt',
+                        };
+                        
+                        print("Trying to match name: ${_filteredRecipes[index].name}"); // Debug print
+                        recipeId = recipeNameToId[_filteredRecipes[index].name] ?? '';
+                        print("Found recipeId: $recipeId"); // Debug print
+                        
+                        if (recipeId.isNotEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RecipeDetailPage(recipeId: recipeId),
+                            ),
+                          );
+                        }
+                      },
+                      child: _buildRecipeCard(context, _filteredRecipes[index]),
+                    );
                   },
                 ),
               ),
@@ -170,8 +202,6 @@ class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
       ),
     );
   }
-
-
 
   Widget _buildRecipeCard(BuildContext context, Recipe recipe) {
     final colorScheme = Theme.of(context).colorScheme;

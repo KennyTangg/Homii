@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import '../../data/recipe_details_data.dart';
 
 class RecipeDetailPage extends StatefulWidget {
+  final String recipeId;
+
+  const RecipeDetailPage({
+    super.key,
+    required this.recipeId,
+  });
+
   @override
   _RecipeDetailPageState createState() => _RecipeDetailPageState();
 }
@@ -8,9 +16,19 @@ class RecipeDetailPage extends StatefulWidget {
 class _RecipeDetailPageState extends State<RecipeDetailPage> {
   bool isFavorited = false;
   List<String> selectedIngredients = [];
+  late final RecipeDetails recipe;
+
+  @override
+  void initState() {
+    super.initState();
+    recipe = recipeDetailsData[widget.recipeId]!;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -18,29 +36,59 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () => Navigator.pop(context),
+            backgroundColor: colorScheme.surface,
+            leading: Container(
+              margin: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                color: colorScheme.primary,
+                onPressed: () => Navigator.pop(context),
+              ),
             ),
             actions: [
-              IconButton(
-                icon: Icon(
-                  isFavorited ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.white,
+              Container(
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-                onPressed: () {
-                  setState(() {
-                    isFavorited = !isFavorited;
-                  });
-                },
+                child: IconButton(
+                  icon: Icon(
+                    isFavorited ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorited ? Colors.red : colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isFavorited = !isFavorited;
+                    });
+                  },
+                ),
               ),
+              const SizedBox(width: 8),
             ],
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage('https://images.unsplash.com/photo-1598515213692-d872826bc47a?w=800'),
+                    image: AssetImage(recipe.imageUrl),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -51,7 +99,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        Colors.black.withOpacity(0.3),
+                        Colors.black.withOpacity(isDarkMode ? 0.7 : 0.3),
                       ],
                     ),
                   ),
@@ -63,68 +111,68 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
           // Content
           SliverToBoxAdapter(
             child: Container(
-              color: Colors.white,
+              color: colorScheme.surface,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Recipe Header
                   Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Recipe by Jane Doe',
+                          'Recipe by ${recipe.author}',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: colorScheme.outline,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          'Pan-Roasted Honey Garlic Chicken Thighs',
+                          recipe.title,
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: colorScheme.onSurface,
                           ),
                         ),
-                        SizedBox(height: 12),
+                        const SizedBox(height: 12),
                         Row(
                           children: [
                             Row(
                               children: List.generate(5, (index) {
                                 return Icon(
-                                  index < 4 ? Icons.star : Icons.star_border,
+                                  index < recipe.rating ? Icons.star : Icons.star_border,
                                   color: Colors.orange,
                                   size: 18,
                                 );
                               }),
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
-                              '4.9 (159)',
+                              '${recipe.rating} (${recipe.reviews})',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: Colors.grey[600],
+                                color: colorScheme.outline,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Row(
                           children: [
-                            _buildInfoChip('40 mins', Icons.access_time),
-                            SizedBox(width: 16),
-                            _buildInfoChip('380 cals', Icons.local_fire_department),
+                            _buildInfoChip(recipe.cookingTime, Icons.access_time),
+                            const SizedBox(width: 16),
+                            _buildInfoChip(recipe.calories, Icons.local_fire_department),
                           ],
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
-                          'Honey Garlic Chicken Thighs are the perfect weeknight dinner solution. This recipe transforms stress up ordinary chicken in this easy dish. Just toss the ingredients together and bake! This is a family favorite that everyone will love. Mom always ate loves things spicy and simple, so it\'s right up her alley.',
+                          recipe.description,
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.grey[700],
+                            color: colorScheme.onSurfaceVariant,
                             height: 1.5,
                           ),
                         ),
@@ -134,8 +182,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                   
                   // Ingredients Section
                   Container(
-                    color: Colors.grey[50],
-                    padding: EdgeInsets.all(20),
+                    color: colorScheme.surfaceVariant.withOpacity(0.3),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -144,50 +192,46 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: colorScheme.onSurface,
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
                           'Serving: 4 people',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: colorScheme.outline,
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         
                         // Ingredient chips
                         Wrap(
                           spacing: 12,
                           runSpacing: 12,
-                          children: [
-                            _buildIngredientChip('Honey', '🍯'),
-                            _buildIngredientChip('Milk', '🥛'),
-                            _buildIngredientChip('Chicken', '🍗'),
-                            _buildIngredientChip('Tomato', '🍅'),
-                            _buildIngredientChip('Egg', '🥚'),
-                          ],
+                          children: recipe.ingredients.map((ingredient) =>
+                            _buildIngredientChip(ingredient.name, ingredient.emoji, ingredient.amount)
+                          ).toList(),
                         ),
                         
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Container(
                           width: double.infinity,
-                          padding: EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey[300]!),
+                            border: Border.all(color: colorScheme.outline.withOpacity(0.3)),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.add, color: Colors.grey[600], size: 20),
-                              SizedBox(width: 8),
+                              Icon(Icons.add, color: colorScheme.outline, size: 20),
+                              const SizedBox(width: 8),
                               Text(
                                 'Add missing ingredients to shopping list',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Colors.grey[600],
+                                  color: colorScheme.outline,
                                 ),
                               ),
                             ],
@@ -199,7 +243,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                   
                   // Directions Section
                   Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -208,40 +252,16 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: colorScheme.onSurface,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         
-                        _buildStep(
-                          'STEP 1',
-                          'Start by patting the chicken thighs dry with paper towels and seasoning generously with salt and pepper. Let them sit at room temperature for about 15 minutes. This will help enhance the flavor and create a nice crust during cooking.',
-                        ),
-                        
-                        _buildStep(
-                          'STEP 2',
-                          'Heat 2 to 3 tablespoons of oil in a large skillet over medium-high heat. Once hot, place the chicken thighs skin-side down. Cook them completely undisturbed for 6 to 7 minutes until the bottom is nicely browned. Note that chicken may be sticky with paper towels. Once nicely browned, bring the internal temperature reaches 75°C (165°F) and the juices run clear.',
-                        ),
-                        
-                        _buildStep(
-                          'STEP 3',
-                          'Transfer the cooked chicken thighs to a plate and set aside. In the same skillet, add the minced garlic and cook for 30 seconds until fragrant. This keeps the meat tender.',
-                        ),
-                        
-                        _buildStep(
-                          'STEP 4',
-                          'Reduce the heat to medium and, using the same skillet, add the honey, soy sauce, and olive oil. Add the minced garlic. Saute for about 30 seconds. Next, bring this mixture to a gentle boil and cook for 2-3 minutes, stirring constantly. The sauce should start to thicken. Return the chicken thighs back to the skillet and add a touch of acidity to balance the sweetness. Let sauce simmer for 1 to 2 minutes and it thickens slightly.',
-                        ),
-                        
-                        _buildStep(
-                          'STEP 5',
-                          'Return the chicken thighs to the pan and spoon the sauce over them. Let them simmer together for about 2-3 minutes to allow the flavors to meld. The chicken should be glazed and glistening in the sticky honey garlic glaze.',
-                        ),
-                        
-                        _buildStep(
-                          'STEP 6',
-                          'Remove the pan from heat and serve the chicken thighs immediately, spooning any extra sauce over the top. Garnish with fresh chopped parsley. For a final touch, sprinkle with sesame seeds and serve with steamed rice or vegetables.',
-                        ),
+                        ...recipe.steps.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final step = entry.value;
+                          return _buildStep('STEP ${index + 1}', step);
+                        }).toList(),
                       ],
                     ),
                   ),
@@ -255,22 +275,24 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   }
 
   Widget _buildInfoChip(String text, IconData icon) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: colorScheme.surfaceVariant.withOpacity(0.3),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: Colors.grey[700]),
-          SizedBox(width: 4),
+          Icon(icon, size: 16, color: colorScheme.primary),
+          const SizedBox(width: 4),
           Text(
             text,
             style: TextStyle(
               fontSize: 14,
-              color: Colors.grey[700],
+              color: colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -279,7 +301,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
     );
   }
 
-  Widget _buildIngredientChip(String name, String emoji) {
+  Widget _buildIngredientChip(String name, String emoji, String amount) {
+    final colorScheme = Theme.of(context).colorScheme;
     bool isSelected = selectedIngredients.contains(name);
     
     return GestureDetector(
@@ -293,26 +316,38 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.orange[100] : Colors.white,
+          color: isSelected ? colorScheme.primary.withOpacity(0.1) : colorScheme.surface,
           borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: isSelected ? Colors.orange[300]! : Colors.grey[300]!,
+            color: isSelected ? colorScheme.primary : colorScheme.outline.withOpacity(0.3),
           ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(emoji, style: TextStyle(fontSize: 18)),
-            SizedBox(width: 8),
-            Text(
-              name,
-              style: TextStyle(
-                fontSize: 14,
-                color: isSelected ? Colors.orange[800] : Colors.grey[700],
-                fontWeight: FontWeight.w500,
-              ),
+            Text(emoji, style: const TextStyle(fontSize: 18)),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: isSelected ? colorScheme.primary : colorScheme.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  amount,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: colorScheme.outline,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -321,15 +356,17 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   }
 
   Widget _buildStep(String stepNumber, String description) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Padding(
-      padding: EdgeInsets.only(bottom: 24),
+      padding: const EdgeInsets.only(bottom: 24),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.orange[100],
+              color: colorScheme.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
@@ -337,17 +374,17 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: Colors.orange[800],
+                color: colorScheme.primary,
               ),
             ),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               description,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[700],
+                color: colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
             ),

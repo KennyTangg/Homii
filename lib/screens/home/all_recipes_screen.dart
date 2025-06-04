@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/custom_search_bar.dart';
+import 'recipe_details.dart';
 
 class AllRecipesScreen extends StatefulWidget {
   final String category;
@@ -15,6 +16,29 @@ class AllRecipesScreen extends StatefulWidget {
 
 class _AllRecipesScreenState extends State<AllRecipesScreen> {
   String _searchQuery = '';
+
+  // Map recipe names to IDs
+  Map<String, String> titleToId = {
+    'Pan-Roasted Honey Garlic Chicken Thighs': 'honey-garlic-chicken',
+    'Salmon Croquettes with Dill Sauce': 'salmon-croquettes',
+    'Caramelized Onion Carbonara': 'onion-carbonara',
+    'Roast Bone-In Loin With Potatoes': 'roast-bone-in-loin',
+    'Oven Risotto With Crispy Roasted Mushrooms': 'oven-risotto',
+    'Baked White Fish With Ginger, Scallions': 'ginger-fish',
+    'Duck a l\'Orange': 'duck-orange',
+    'Crisp Roasted Duck': 'roasted-duck',
+    'Breakfast Skillet': 'breakfast-skillet',
+    'Creamy Homemade Yogurt': 'creamy-yogurt',
+    'Classic Avocado Toast': 'avocado-toast',
+    'Creamy Garlic Chicken': 'garlic-chicken',
+    'Asian-Style Beef Stir Fry': 'beef-stir-fry',
+    'Crispy Roast Potatoes': 'roast-potatoes',
+    'Spicy Honey Garlic Shrimp': 'spicy-honey-shrimp',
+    'Mediterranean Fish Platter': 'mediterranean-fish',
+    'Truffle Mushroom Pasta': 'truffle-pasta',
+    'Gourmet Breakfast Bowl': 'gourmet-breakfast',
+    'Citrus Duck Breast': 'citrus-duck',
+  };
 
   // Sample recipe data - in a real app, this would come from a database or API
   final List<Map<String, String>> _allRecipes = [
@@ -40,7 +64,7 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
       'calories': '220 kcals',
       'author': 'Breakfast Pro',
       'image': 'assets/images/planner/avocado_toast_planner.png',
-      'category': 'Popular Recipes',
+      'category': 'Healthy Eats',
     },
     {
       'name': 'Creamy Garlic Chicken',
@@ -63,7 +87,7 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
       'time': '40 mins',
       'calories': '520 kcals',
       'author': 'Sophia Martinez',
-      'image': 'assets/images/recipes/onion_carbonara_image.png',
+      'image': 'assets/images/home/onion_carbonara.png',
       'category': 'Popular Recipes',
     },
     {
@@ -72,46 +96,6 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
       'calories': '410 kcals',
       'author': 'David Kim',
       'image': 'assets/images/recipes/oven_risotto_image.png',
-      'category': 'Popular Recipes',
-    },
-    {
-      'name': 'Breakfast Skillet',
-      'time': '25 mins',
-      'calories': '520 kcals',
-      'author': 'Jane Doe',
-      'image': 'assets/images/recipes/breakfast_skillet_image.png',
-      'category': 'Popular Recipes',
-    },
-    {
-      'name': 'Greek Yogurt with Berries',
-      'time': '5 mins',
-      'calories': '180 kcals',
-      'author': 'Health Chef',
-      'image': 'assets/images/home/oats_greek.png',
-      'category': 'Healthy Eats',
-    },
-    {
-      'name': 'Grilled Fish with Herbs',
-      'time': '20 mins',
-      'calories': '250 kcals',
-      'author': 'Chef Maria',
-      'image': 'assets/images/home/fish.png',
-      'category': 'Healthy Eats',
-    },
-    {
-      'name': 'Braised Beef Stir Fry',
-      'time': '30 mins',
-      'calories': '350 kcals',
-      'author': 'Asian Kitchen',
-      'image': 'assets/images/planner/beef_stir_planner.png',
-      'category': 'Healthy Eats',
-    },
-    {
-      'name': 'Overnight Oats and Greek Yogurt',
-      'time': '5 mins prep',
-      'calories': '200 kcals',
-      'author': 'Morning Chef',
-      'image': 'assets/images/planner/oat_greek_planner.png',
       'category': 'Healthy Eats',
     },
     {
@@ -123,21 +107,20 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
       'category': 'Healthy Eats',
     },
     {
+      'name': 'Asian-Style Beef Stir Fry',
+      'time': '25 mins',
+      'calories': '320 kcals',
+      'author': 'Chef Ming',
+      'image': 'assets/images/planner/beef_stir_planner.png',
+      'category': 'Healthy Eats',
+    },
+    {
       'name': 'Creamy Homemade Yogurt',
       'time': '20 mins',
       'calories': '210 kcals',
       'author': 'Jane Doe',
       'image': 'assets/images/recipes/creamy_yogurt_image.png',
       'category': 'Healthy Eats',
-    },
-    // Additional Popular this week recipes
-    {
-      'name': 'Mediterranean Fish Bowl',
-      'time': '25 mins',
-      'calories': '340 kcals',
-      'author': 'Chef Marina',
-      'image': 'assets/images/home/fish.png',
-      'category': 'Popular this week',
     },
     {
       'name': 'Crispy Roast Potatoes',
@@ -148,84 +131,68 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
       'category': 'Popular this week',
     },
     {
-      'name': 'Creamy Onion Carbonara',
-      'time': '30 mins',
-      'calories': '520 kcals',
-      'author': 'Italian Chef',
-      'image': 'assets/images/home/onion_carbonara.png',
-      'category': 'Popular this week',
-    },
-    {
-      'name': 'Fresh Salmon Delight',
-      'time': '35 mins',
-      'calories': '380 kcals',
-      'author': 'Seafood Master',
-      'image': 'assets/images/home/salmon.png',
-      'category': 'Popular this week',
-    },
-    {
-      'name': 'Honey Garlic Glazed Chicken',
-      'time': '40 mins',
-      'calories': '420 kcals',
-      'author': 'BBQ King',
-      'image': 'assets/images/planner/honey_garlic_planner.png',
-      'category': 'Popular this week',
-    },
-    {
-      'name': 'Gourmet Avocado Toast',
-      'time': '15 mins',
-      'calories': '250 kcals',
-      'author': 'Brunch Expert',
-      'image': 'assets/images/planner/avocado_toast_planner.png',
-      'category': 'Popular this week',
-    },
-    {
-      'name': 'Asian Beef Stir Fry',
-      'time': '25 mins',
-      'calories': '390 kcals',
-      'author': 'Wok Master',
-      'image': 'assets/images/planner/beef_stir_planner.png',
-      'category': 'Popular this week',
-    },
-    {
-      'name': 'Creamy Garlic Chicken Supreme',
-      'time': '35 mins',
-      'calories': '450 kcals',
-      'author': 'Chef Roberto',
-      'image': 'assets/images/recipes/garlic_chicken_image.png',
-      'category': 'Popular this week',
-    },
-    {
-      'name': 'Gourmet Breakfast Skillet',
-      'time': '20 mins',
-      'calories': '380 kcals',
-      'author': 'Morning Chef',
-      'image': 'assets/images/recipes/breakfast_skillet_image.png',
-      'category': 'Popular this week',
-    },
-    {
-      'name': 'Roasted Duck with Orange Glaze',
+      'name': 'Duck a l\'Orange',
       'time': '90 mins',
-      'calories': '650 kcals',
-      'author': 'Fine Dining Chef',
+      'calories': '680 kcals',
+      'author': 'Pierre Dubois',
+      'image': 'assets/images/recipes/duck_orange_image.png',
+      'category': 'Popular this week',
+    },
+    {
+      'name': 'Crisp Roasted Duck',
+      'time': '120 mins',
+      'calories': '780 kcals',
+      'author': 'Thomas Lee',
       'image': 'assets/images/recipes/roasted_duck_image.png',
       'category': 'Popular this week',
     },
     {
-      'name': 'Salmon Croquettes Deluxe',
-      'time': '30 mins',
-      'calories': '340 kcals',
-      'author': 'Seafood Specialist',
-      'image': 'assets/images/recipes/salmon_croquettes_image.png',
+      'name': 'Breakfast Skillet',
+      'time': '25 mins',
+      'calories': '520 kcals',
+      'author': 'Jane Doe',
+      'image': 'assets/images/recipes/breakfast_skillet_image.png',
       'category': 'Popular this week',
     },
     {
-      'name': 'Baked White Fish with Ginger',
-      'time': '35 mins',
-      'calories': '290 kcals',
-      'author': 'Asian Fusion Chef',
+      'name': 'Spicy Honey Garlic Shrimp',
+      'time': '20 mins',
+      'calories': '280 kcals',
+      'author': 'Chef Maria',
+      'image': 'assets/images/home/honey_garlic.png',
+      'category': 'Recommended for you',
+    },
+    {
+      'name': 'Mediterranean Fish Platter',
+      'time': '30 mins',
+      'calories': '310 kcals',
+      'author': 'Chef Marco',
       'image': 'assets/images/recipes/ginger_fish_image.png',
-      'category': 'Popular this week',
+      'category': 'Recommended for you',
+    },
+    {
+      'name': 'Truffle Mushroom Pasta',
+      'time': '35 mins',
+      'calories': '480 kcals',
+      'author': 'Chef Isabella',
+      'image': 'assets/images/recipes/oven_risotto_image.png',
+      'category': 'Recommended for you',
+    },
+    {
+      'name': 'Gourmet Breakfast Bowl',
+      'time': '20 mins',
+      'calories': '420 kcals',
+      'author': 'Chef Sarah',
+      'image': 'assets/images/recipes/breakfast_skillet_image.png',
+      'category': 'Recommended for you',
+    },
+    {
+      'name': 'Citrus Duck Breast',
+      'time': '45 mins',
+      'calories': '520 kcals',
+      'author': 'Chef Jean',
+      'image': 'assets/images/recipes/duck_orange_image.png',
+      'category': 'Recommended for you',
     },
   ];
 
@@ -353,119 +320,132 @@ class _AllRecipesScreenState extends State<AllRecipesScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.onSurface.withAlpha(26),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Recipe image
-          SizedBox(
-            height: 120, // Fixed height for image
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-              ),
-              child: Stack(
-                children: [
-                  Image.asset(
-                    recipe['image']!,
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: double.infinity,
-                        height: double.infinity,
-                        color: isDarkMode ? colorScheme.primary.withAlpha(50) : colorScheme.primary.withAlpha(25),
-                        child: Center(
-                          child: Icon(
-                            Icons.restaurant,
-                            size: 40,
-                            color: colorScheme.primary.withAlpha(150),
+    return GestureDetector(
+      onTap: () {
+        String recipeId = titleToId[recipe['name']] ?? '';
+        if (recipeId.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecipeDetailPage(recipeId: recipeId),
+            ),
+          );
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: colorScheme.onPrimary,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.onSurface.withAlpha(26),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Recipe image
+            SizedBox(
+              height: 120, // Fixed height for image
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      recipe['image']!,
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: isDarkMode ? colorScheme.primary.withAlpha(50) : colorScheme.primary.withAlpha(25),
+                          child: Center(
+                            child: Icon(
+                              Icons.restaurant,
+                              size: 40,
+                              color: colorScheme.primary.withAlpha(150),
+                            ),
                           ),
+                        );
+                      },
+                    ),
+                    // Favorite button
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withAlpha(200),
+                          shape: BoxShape.circle,
                         ),
-                      );
-                    },
-                  ),
-                  // Favorite button
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withAlpha(200),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        iconSize: 20,
-                        color: colorScheme.primary,
-                        onPressed: () {
-                          // Handle favorite toggle
-                        },
+                        child: IconButton(
+                          icon: const Icon(Icons.favorite_border),
+                          iconSize: 20,
+                          color: colorScheme.primary,
+                          onPressed: () {
+                            // Handle favorite toggle
+                          },
+                        ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ),
+            // Recipe details
+            Container(
+              height: 80, // Fixed height to prevent overflow
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      recipe['name']!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.onSurface,
+                        fontSize: 13,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    recipe['author']!,
+                    style: TextStyle(
+                      color: colorScheme.outline,
+                      fontSize: 11,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${recipe['time']} · ${recipe['calories']}',
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-          ),
-          // Recipe details
-          Container(
-            height: 80, // Fixed height to prevent overflow
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Text(
-                    recipe['name']!,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: colorScheme.onSurface,
-                      fontSize: 13,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  recipe['author']!,
-                  style: TextStyle(
-                    color: colorScheme.outline,
-                    fontSize: 11,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  '${recipe['time']} · ${recipe['calories']}',
-                  style: TextStyle(
-                    color: colorScheme.primary,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

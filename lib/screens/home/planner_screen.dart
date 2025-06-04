@@ -195,16 +195,6 @@ class PlannerScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add new meal functionality
-        },
-        backgroundColor: colorScheme.primary,
-        child: Icon(
-          Icons.restaurant,
-          color: colorScheme.onPrimary,
-        ),
-      ),
     );
   }
 
@@ -217,7 +207,7 @@ class PlannerScreen extends StatelessWidget {
         Text(
           day.date,
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 0,
             fontWeight: FontWeight.bold,
             color: colorScheme.onSurface,
           ),

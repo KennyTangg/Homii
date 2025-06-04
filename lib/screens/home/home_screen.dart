@@ -8,6 +8,7 @@ import 'all_recipes_screen.dart'; // Import the new all recipes screen
 import '../notifications/notifications_screen.dart'; // Import the notifications screen
 import '../../widgets/custom_search_bar.dart';
 import '../../widgets/slide_page_route.dart';
+import 'recipe_details.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -245,9 +246,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           'assets/images/home/honey_garlic.png',
                         ),
                         _buildRecipeCard(
-                          'Salmon Croquettes with Dill Sauce',
-                          '25 mins',
-                          '320 kcals',
+                          'Salmon Croquettes With Dill Sauce',
+                          '45 mins',
+                          '340 kcals',
                           'Caroline Randall',
                           'assets/images/home/salmon.png',
                         ),
@@ -258,18 +259,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       'Healthy Eats',
                       [
                         _buildRecipeCard(
-                          'Greek Yogurt with Berries',
-                          '5 mins',
-                          '180 kcals',
-                          'Health Chef',
-                          'assets/images/home/oats_greek.png',
+                          'Baked White Fish With Ginger, Scallions',
+                          '35 mins',
+                          '290 kcals',
+                          'Angela Chen',
+                          'assets/images/home/fish.png',
                         ),
                         _buildRecipeCard(
-                          'Grilled Fish with Herbs',
-                          '20 mins',
-                          '250 kcals',
-                          'Chef Maria',
-                          'assets/images/home/fish.png',
+                          'Oven Risotto With Crispy Roasted Mushrooms',
+                          '50 mins',
+                          '410 kcals',
+                          'David Kim',
+                          'assets/images/recipes/oven_risotto_image.png',
                         ),
                       ],
                     ),
@@ -278,18 +279,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       'Recommended for you',
                       [
                         _buildRecipeCard(
-                          'Creamy Onion Carbonara',
-                          '30 mins',
-                          '420 kcals',
-                          'Italian Chef',
-                          'assets/images/home/onion_carbonara.png',
+                          'Duck a l\'Orange',
+                          '90 mins',
+                          '680 kcals',
+                          'Pierre Dubois',
+                          'assets/images/recipes/duck_orange_image.png',
                         ),
                         _buildRecipeCard(
-                          'Crispy Roast Potatoes',
-                          '45 mins',
-                          '280 kcals',
-                          'Home Cook',
-                          'assets/images/home/roast_potato.png',
+                          'Crisp Roasted Duck',
+                          '120 mins',
+                          '780 kcals',
+                          'Thomas Lee',
+                          'assets/images/recipes/roasted_duck_image.png',
                         ),
                       ],
                     ),
@@ -298,25 +299,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       'Popular this week',
                       [
                         _buildRecipeCard(
-                          'Pan-Roasted Honey Garlic Chicken',
-                          '35 mins',
-                          '380 kcals',
-                          'Chef Gordon',
-                          'assets/images/home/honey_garlic.png',
+                          'Roast Bone-In Loin With Potatoes',
+                          '120 mins',
+                          '750 kcals',
+                          'Michael Chen',
+                          'assets/images/recipes/roast_potatoes_image.png',
                         ),
                         _buildRecipeCard(
-                          'Fresh Salmon Delight',
+                          'Caramelized Onion Carbonara',
+                          '40 mins',
+                          '520 kcals',
+                          'Sophia Martinez',
+                          'assets/images/home/onion_carbonara.png',
+                        ),
+                        _buildRecipeCard(
+                          'Breakfast Skillet\n',
                           '25 mins',
-                          '320 kcals',
-                          'Seafood Master',
-                          'assets/images/home/salmon.png',
-                        ),
-                        _buildRecipeCard(
-                          'Mediterranean Fish Bowl',
-                          '20 mins',
-                          '250 kcals',
-                          'Healthy Kitchen',
-                          'assets/images/home/fish.png',
+                          '520 kcals',
+                          'Jane Doe',
+                          'assets/images/recipes/breakfast_skillet_image.png',
                         ),
                       ],
                     ),
@@ -466,78 +467,109 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildRecipeCard(String title, String time, String calories, String author, String imagePath) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Container(
-      width: 200,
-      margin: const EdgeInsets.only(right: 15),
-      decoration: BoxDecoration(
-        color: colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: colorScheme.onSurface.withValues(alpha: 0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 120,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                  image: DecorationImage(
-                    image: AssetImage(imagePath),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 10,
-                right: 10,
-                child: _buildFavoriteIcon(),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () {
+        String recipeId = '';
+        // Map the title to the corresponding recipe ID
+        Map<String, String> titleToId = {
+          'Pan-Roasted Honey Garlic Chicken Thighs': 'honey-garlic-chicken',
+          'Salmon Croquettes With Dill Sauce': 'salmon-croquettes',
+          'Caramelized Onion Carbonara': 'onion-carbonara',
+          'Roast Bone-In Loin With Potatoes': 'roast-bone-in-loin',
+          'Oven Risotto With Crispy Roasted Mushrooms': 'oven-risotto',
+          'Baked White Fish With Ginger, Scallions': 'ginger-fish',
+          'Duck a l\'Orange': 'duck-orange',
+          'Crisp Roasted Duck': 'roasted-duck',
+          'Breakfast Skillet': 'breakfast-skillet',
+          'Creamy Homemade Yogurt': 'creamy-yogurt',
+        };
+        
+        print("Trying to match title: $title"); // Debug print
+        recipeId = titleToId[title] ?? '';
+        print("Found recipeId: $recipeId"); // Debug print
+        
+        if (recipeId.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecipeDetailPage(recipeId: recipeId),
+            ),
+          );
+        }
+      },
+      child: Container(
+        width: 200,
+        margin: const EdgeInsets.only(right: 15),
+        decoration: BoxDecoration(
+          color: colorScheme.onPrimary,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.onSurface.withValues(alpha: 0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
               children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: colorScheme.onSurface,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '$time · $calories',
-                  style: TextStyle(
-                    color: colorScheme.primary, // Green color for time and calories
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                Container(
+                  height: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                    image: DecorationImage(
+                      image: AssetImage(imagePath),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  author,
-                  style: TextStyle(
-                    color: colorScheme.outline,
-                    fontSize: 12,
-                  ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: _buildFavoriteIcon(),
                 ),
               ],
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: colorScheme.onSurface,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '$time · $calories',
+                    style: TextStyle(
+                      color: colorScheme.primary, // Green color for time and calories
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    author,
+                    style: TextStyle(
+                      color: colorScheme.outline,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

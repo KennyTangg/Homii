@@ -113,6 +113,7 @@ class _PantryScreenState extends State<PantryScreen> {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -123,7 +124,7 @@ class _PantryScreenState extends State<PantryScreen> {
               Text(
                 'My Pantry',
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: colorScheme.onSurface,
                 ),
@@ -208,10 +209,10 @@ class _PantryScreenState extends State<PantryScreen> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: 'Search ingredient...',
+                          hintText: 'Search Ingredient...',
                           hintStyle: TextStyle(
                             color: colorScheme.outline,
-                            fontSize: 14,
+                            fontSize: 12,
                           ),
                           prefixIcon: Icon(
                             Icons.search,
