@@ -112,8 +112,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
               const Text(
                 'What are your home-cooking goals?',
                 style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600,
                   color: Colors.white,
                   height: 1.2,
                 ),

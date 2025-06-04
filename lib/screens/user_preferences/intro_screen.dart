@@ -9,7 +9,7 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Color.fromRGBO(247, 244, 237, 1),
       body: SwipeDetector(
         onSwipeLeft: () {
           Navigator.of(context).pushReplacement(
@@ -34,17 +34,34 @@ class IntroScreen extends StatelessWidget {
         },
         child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 35),
           child: Align(
             alignment: Alignment.topLeft,
-            child: Text(
-              "Let's get to know your eating habits.",
-              style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.secondary,
-                height: 1.2,// Orange color
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Let's get to know your eating preferences.",
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.secondary, // Orange color
+                    height: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  child: Text(
+                    "This data will be used to help curate your recipe recommendations, meal plans, and the information displayed.",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.grey[700],
+                      height: 1.1,// Orange color
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -52,8 +69,8 @@ class IntroScreen extends StatelessWidget {
       floatingActionButton: Stack(
         children: [
           Positioned(
-            bottom: 10.0,
-            right: 10.0,
+            bottom: 15,
+            right: 15,
             child: SizedBox(
               width: 70,
               height: 70,
@@ -83,7 +100,7 @@ class IntroScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Icon(Icons.arrow_forward),
+                child: Icon(Icons.arrow_forward,size:30, color: Colors.white),
               ),
             ),
           ),

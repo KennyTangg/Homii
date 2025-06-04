@@ -4,6 +4,7 @@ import 'saved_recipes_screen.dart';
 import 'planner_screen.dart';
 import 'pantry_screen.dart';
 import 'shop_screen.dart';
+import 'all_recipes_screen.dart'; // Import the new all recipes screen
 import '../notifications/notifications_screen.dart'; // Import the notifications screen
 import '../../widgets/custom_search_bar.dart';
 import '../../widgets/slide_page_route.dart';
@@ -188,11 +189,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
+                        color: colorScheme.onSurface.withValues(alpha: 0.1),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -231,6 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    _buildFeaturedSection(),
+                    const SizedBox(height: 30),
                     _buildSection(
                       'Popular Recipes',
                       [
@@ -270,6 +273,53 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 30),
+                    _buildSection(
+                      'Recommended for you',
+                      [
+                        _buildRecipeCard(
+                          'Creamy Onion Carbonara',
+                          '30 mins',
+                          '420 kcals',
+                          'Italian Chef',
+                          'assets/images/home/onion_carbonara.png',
+                        ),
+                        _buildRecipeCard(
+                          'Crispy Roast Potatoes',
+                          '45 mins',
+                          '280 kcals',
+                          'Home Cook',
+                          'assets/images/home/roast_potato.png',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    _buildSection(
+                      'Popular this week',
+                      [
+                        _buildRecipeCard(
+                          'Pan-Roasted Honey Garlic Chicken',
+                          '35 mins',
+                          '380 kcals',
+                          'Chef Gordon',
+                          'assets/images/home/honey_garlic.png',
+                        ),
+                        _buildRecipeCard(
+                          'Fresh Salmon Delight',
+                          '25 mins',
+                          '320 kcals',
+                          'Seafood Master',
+                          'assets/images/home/salmon.png',
+                        ),
+                        _buildRecipeCard(
+                          'Mediterranean Fish Bowl',
+                          '20 mins',
+                          '250 kcals',
+                          'Healthy Kitchen',
+                          'assets/images/home/fish.png',
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -280,15 +330,128 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildFeaturedSection() {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Check out what\'s for lunch!',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: colorScheme.onSurface,
+          ),
+        ),
+        const SizedBox(height: 15),
+        Container(
+          height: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            image: const DecorationImage(
+              image: AssetImage('assets/images/home/honey_garlic.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withValues(alpha: 0.7),
+                ],
+              ),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Pan-Roasted Honey Garlic Chicken Thighs',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      color: colorScheme.primary,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '40 mins',
+                      style: TextStyle(
+                        color: colorScheme.primary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Icon(
+                      Icons.local_fire_department,
+                      color: colorScheme.primary,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '380 kcals',
+                      style: TextStyle(
+                        color: colorScheme.primary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildSection(String title, List<Widget> items) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            TextButton(onPressed: () {}, child: const Text('See More')),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AllRecipesScreen(category: title),
+                  ),
+                );
+              },
+              child: Text(
+                'See More',
+                style: TextStyle(color: colorScheme.secondary),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 10),
@@ -301,15 +464,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildRecipeCard(String title, String time, String calories, String author, String imagePath) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       width: 200,
       margin: const EdgeInsets.only(right: 15),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: colorScheme.onSurface.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -344,9 +509,10 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
+                    color: colorScheme.onSurface,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -354,8 +520,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 8),
                 Text(
                   '$time · $calories',
-                  style: const TextStyle(
-                    color: Color(0xFF457942), // Green color for time and calories
+                  style: TextStyle(
+                    color: colorScheme.primary, // Green color for time and calories
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
@@ -364,7 +530,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   author,
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: colorScheme.outline,
                     fontSize: 12,
                   ),
                 ),
@@ -391,6 +557,8 @@ class _FavoriteIconState extends State<_FavoriteIcon> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -400,12 +568,12 @@ class _FavoriteIconState extends State<_FavoriteIcon> {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.9),
+          color: colorScheme.onPrimary.withValues(alpha: 0.9),
           shape: BoxShape.circle,
         ),
         child: Icon(
           isFavorite ? Icons.favorite : Icons.favorite_border,
-          color: isFavorite ? Colors.red : Colors.grey[600],
+          color: isFavorite ? Colors.red : colorScheme.outline,
           size: 18,
         ),
       ),

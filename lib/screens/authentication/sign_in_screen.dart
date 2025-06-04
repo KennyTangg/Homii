@@ -8,7 +8,10 @@ class SignInScreen extends StatelessWidget {
   Widget _buildSocialButton({
     required VoidCallback onPressed,
     required String iconPath,
+    required BuildContext context,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return InkWell(
       onTap: onPressed,
       child: Container(
@@ -16,10 +19,10 @@ class SignInScreen extends StatelessWidget {
         height: 44,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          color: colorScheme.onPrimary,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
+              color: colorScheme.onSurface.withValues(alpha: 0.1),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -37,8 +40,11 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F3E9), // Cream background for the top part
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           // Food illustrations at top - outside SafeArea to extend to status bar
@@ -91,17 +97,17 @@ class SignInScreen extends StatelessWidget {
                       TextField(
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFF8F3E9),
+                          fillColor: colorScheme.surface,
                           hintText: 'Email',
-                          hintStyle: const TextStyle(color: Colors.black54),
-                          prefixIcon: const Icon(Icons.email_outlined, color: Colors.black54),
+                          hintStyle: TextStyle(color: colorScheme.outline),
+                          prefixIcon: Icon(Icons.email_outlined, color: colorScheme.outline),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide.none,
                           ),
                           contentPadding: const EdgeInsets.symmetric(vertical: 15),
                         ),
-                        style: const TextStyle(color: Colors.black87),
+                        style: TextStyle(color: colorScheme.onSurface),
                         keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 16),
@@ -111,17 +117,17 @@ class SignInScreen extends StatelessWidget {
                         obscureText: true,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: const Color(0xFFF8F3E9),
+                          fillColor: colorScheme.surface,
                           hintText: 'Password',
-                          hintStyle: const TextStyle(color: Colors.black54),
-                          prefixIcon: const Icon(Icons.lock_outline, color: Colors.black54),
+                          hintStyle: TextStyle(color: colorScheme.outline),
+                          prefixIcon: Icon(Icons.lock_outline, color: colorScheme.outline),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide: BorderSide.none,
                           ),
                           contentPadding: const EdgeInsets.symmetric(vertical: 15),
                         ),
-                        style: const TextStyle(color: Colors.black87),
+                        style: TextStyle(color: colorScheme.onSurface),
                       ),
                       const SizedBox(height: 8),
 
@@ -133,7 +139,7 @@ class SignInScreen extends StatelessWidget {
                           child: Text(
                             'Forgot password?',
                             style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
+                              color: colorScheme.secondary,
                               fontSize: 14,
                             ),
                           ),
@@ -147,7 +153,7 @@ class SignInScreen extends StatelessWidget {
                           Expanded(
                             child: Container(
                               height: 1,
-                              color: Colors.grey[300],
+                              color: colorScheme.outline.withValues(alpha: 0.3),
                             ),
                           ),
                           Padding(
@@ -155,7 +161,7 @@ class SignInScreen extends StatelessWidget {
                             child: Text(
                               'OR',
                               style: TextStyle(
-                                color: Colors.orange[400],
+                                color: colorScheme.secondary,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -163,7 +169,7 @@ class SignInScreen extends StatelessWidget {
                           Expanded(
                             child: Container(
                               height: 1,
-                              color: Colors.grey[300],
+                              color: colorScheme.outline.withValues(alpha: 0.3),
                             ),
                           ),
                         ],
@@ -177,16 +183,19 @@ class SignInScreen extends StatelessWidget {
                           _buildSocialButton(
                             onPressed: () {},
                             iconPath: 'assets/images/google_icon.png',
+                            context: context,
                           ),
                           const SizedBox(width: 16),
                           _buildSocialButton(
                             onPressed: () {},
                             iconPath: 'assets/images/facebook_icon.png',
+                            context: context,
                           ),
                           const SizedBox(width: 16),
                           _buildSocialButton(
                             onPressed: () {},
                             iconPath: 'assets/images/apple_icon.png',
+                            context: context,
                           ),
                         ],
                       ),
@@ -197,9 +206,9 @@ class SignInScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               'Don\'t have an account? ',
-                              style: TextStyle(color: Colors.black54),
+                              style: TextStyle(color: colorScheme.outline),
                             ),
                             GestureDetector(
                               onTap: () {
@@ -213,7 +222,7 @@ class SignInScreen extends StatelessWidget {
                               child: Text(
                                 'Sign up',
                                 style: TextStyle(
-                                  color: Colors.green[700],
+                                  color: colorScheme.primary,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -234,8 +243,8 @@ class SignInScreen extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.secondary,
-                          foregroundColor: Colors.white,
+                          backgroundColor: colorScheme.secondary,
+                          foregroundColor: colorScheme.onPrimary,
                           minimumSize: const Size(double.infinity, 48),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24),

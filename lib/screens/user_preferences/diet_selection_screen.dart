@@ -124,8 +124,8 @@ class _DietSelectionScreenState extends State<DietSelectionScreen> {
               const Text(
                 'Do you have a specific diet?',
                 style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600,
                   color: Colors.white,
                   height: 1.2,
                 ),

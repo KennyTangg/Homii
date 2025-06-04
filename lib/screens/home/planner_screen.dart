@@ -76,6 +76,29 @@ class PlannerScreen extends StatelessWidget {
           name: 'Overnight Oats and Greek Yogurt',
           mealType: 'Breakfast',
           imagePath: 'assets/images/planner/oat_greek_planner.png',
+          isCompleted: true,
+        ),
+        PlannerMeal(
+          name: 'Pan-Roasted Honey Garlic Chicken Thighs',
+          mealType: 'Lunch',
+          imagePath: 'assets/images/planner/honey_garlic_planner.png',
+          isCompleted: true,
+        ),
+        PlannerMeal(
+          name: 'Braised Beef Stir Fry',
+          mealType: 'Dinner',
+          imagePath: 'assets/images/planner/beef_stir_planner.png',
+          isCompleted: true,
+        ),
+      ],
+    ),
+    PlannerDay(
+      date: '21 March',
+      meals: [
+        PlannerMeal(
+          name: 'Classic Avocado Toast',
+          mealType: 'Breakfast',
+          imagePath: 'assets/images/planner/avocado_toast_planner.png',
           isCompleted: false,
         ),
       ],
@@ -84,9 +107,11 @@ class PlannerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xFFF8F3E9), // Cream background to match design
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -94,19 +119,19 @@ class PlannerScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
-              const Text(
+              Text(
                 'Planner',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 5),
-              const Text(
+              Text(
                 'Meal Plan: 2,400 kcal',
                 style: TextStyle(
-                  color: Color(0xFF8B4513), // Brown color to match design
+                  color: colorScheme.primary,
                   fontSize: 16,
                 ),
               ),
@@ -126,8 +151,8 @@ class PlannerScreen extends StatelessWidget {
                         );
                       },
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color(0xFFE67E22), // Orange color
-                        side: const BorderSide(color: Color(0xFFE67E22)),
+                        foregroundColor: colorScheme.secondary,
+                        side: BorderSide(color: colorScheme.secondary),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
@@ -143,8 +168,8 @@ class PlannerScreen extends StatelessWidget {
                       icon: const Icon(Icons.add, size: 18),
                       label: const Text('Auto-add meals'),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color(0xFFE67E22), // Orange color
-                        side: const BorderSide(color: Color(0xFFE67E22)),
+                        foregroundColor: colorScheme.secondary,
+                        side: BorderSide(color: colorScheme.secondary),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
@@ -174,25 +199,27 @@ class PlannerScreen extends StatelessWidget {
         onPressed: () {
           // Add new meal functionality
         },
-        backgroundColor: const Color(0xFF4CAF50), // Green color from design
-        child: const Icon(
+        backgroundColor: colorScheme.primary,
+        child: Icon(
           Icons.restaurant,
-          color: Colors.white,
+          color: colorScheme.onPrimary,
         ),
       ),
     );
   }
 
   Widget _buildDaySection(BuildContext context, PlannerDay day) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           day.date,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 15),
@@ -205,14 +232,16 @@ class PlannerScreen extends StatelessWidget {
   }
 
   Widget _buildMealCard(BuildContext context, PlannerMeal meal) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.onPrimary,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: colorScheme.onSurface.withValues(alpha: 0.08),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -235,10 +264,10 @@ class PlannerScreen extends StatelessWidget {
                 return Container(
                   width: 80,
                   height: 80,
-                  color: Colors.grey[300],
-                  child: const Icon(
+                  color: colorScheme.outline.withValues(alpha: 0.3),
+                  child: Icon(
                     Icons.restaurant,
-                    color: Colors.grey,
+                    color: colorScheme.outline,
                     size: 30,
                   ),
                 );
@@ -254,10 +283,10 @@ class PlannerScreen extends StatelessWidget {
               children: [
                 Text(
                   meal.name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: colorScheme.onSurface,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -265,8 +294,8 @@ class PlannerScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   meal.mealType,
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: colorScheme.outline,
                     fontSize: 14,
                   ),
                 ),
@@ -283,7 +312,7 @@ class PlannerScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 12.0),
                   child: Icon(
                     Icons.drag_handle,
-                    color: Colors.grey[400],
+                    color: colorScheme.outline.withValues(alpha: 0.6),
                     size: 20,
                   ),
                 ),
@@ -292,8 +321,8 @@ class PlannerScreen extends StatelessWidget {
                   child: Icon(
                     meal.isCompleted ? Icons.check_circle : Icons.check_circle_outline,
                     color: meal.isCompleted
-                        ? const Color(0xFF4CAF50)
-                        : Colors.grey[400],
+                        ? colorScheme.primary
+                        : colorScheme.outline.withValues(alpha: 0.6),
                     size: 24,
                   ),
                 ),

@@ -27,8 +27,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white, // White background as shown in the image
+      backgroundColor: colorScheme.onPrimary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -42,7 +44,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFFDF6730), // Orange color from the image
+                    color: colorScheme.secondary,
                     letterSpacing: 1.2,
                   ),
                 ),
@@ -58,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   style: TextStyle(
                     fontSize: 42,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF457942),
+                    color: colorScheme.primary,
                     height: 1.2,
                   ),
                 ),
@@ -73,7 +75,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.grey[600],
+                    color: colorScheme.outline,
                     height: 1.5,
                   ),
                 ),
@@ -151,7 +153,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 height: 70,
                                 width: 70,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: colorScheme.onPrimary,
                                   borderRadius: BorderRadius.circular(35),
                                 ),
                                 child: Center(
@@ -251,8 +253,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF457942), // Green color from the image
-                        foregroundColor: Colors.white,
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.onPrimary,
                         minimumSize: const Size(double.infinity, 56),
                         elevation: 0, // No shadow
                         shape: RoundedRectangleBorder(

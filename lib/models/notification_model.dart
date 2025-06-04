@@ -1,9 +1,10 @@
 class NotificationModel {
   final String id;
-  final String type; // 'like', 'comment'
+  final String type; // 'like', 'comment', 'follow', 'milk_expiry', 'recipe_suggestion'
   final String username;
   final String postTitle;
   final String? comment;
+  final String? additionalInfo;
   final DateTime timestamp;
 
   NotificationModel({
@@ -12,6 +13,7 @@ class NotificationModel {
     required this.username,
     required this.postTitle,
     this.comment,
+    this.additionalInfo,
     required this.timestamp,
   });
 
@@ -30,5 +32,13 @@ class NotificationModel {
     return timestamp.year == yesterday.year &&
         timestamp.month == yesterday.month &&
         timestamp.day == yesterday.day;
+  }
+
+  // Helper method to check if notification is from last 7 days (excluding today and yesterday)
+  bool get isLastSevenDays {
+    final now = DateTime.now();
+    final sevenDaysAgo = now.subtract(const Duration(days: 7));
+    final twoDaysAgo = now.subtract(const Duration(days: 2));
+    return timestamp.isAfter(sevenDaysAgo) && timestamp.isBefore(twoDaysAgo);
   }
 }

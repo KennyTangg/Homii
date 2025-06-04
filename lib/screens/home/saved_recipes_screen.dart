@@ -17,10 +17,17 @@ class Recipe {
   });
 }
 
-class SavedRecipesScreen extends StatelessWidget {
+class SavedRecipesScreen extends StatefulWidget {
   const SavedRecipesScreen({super.key});
 
-  List<Recipe> get recipes => [
+  @override
+  State<SavedRecipesScreen> createState() => _SavedRecipesScreenState();
+}
+
+class _SavedRecipesScreenState extends State<SavedRecipesScreen> {
+  String _searchQuery = '';
+
+  List<Recipe> get _allRecipes => [
     Recipe(
       name: 'Pan-Roasted Honey Garlic Chicken',
       author: 'Jane Doe',
@@ -64,21 +71,21 @@ class SavedRecipesScreen extends StatelessWidget {
       imagePath: 'assets/images/recipes/ginger_fish_image.png',
     ),
     Recipe(
-      name: 'Duck a l\'Orange',
+      name: 'Duck a l\'Orange\n',
       author: 'Pierre Dubois',
       cookTime: '90 mins',
       calories: '680 kcals',
       imagePath: 'assets/images/recipes/duck_orange_image.png',
     ),
     Recipe(
-      name: 'Crisp Roasted Duck',
+      name: 'Crisp Roasted Duck\n',
       author: 'Thomas Lee',
       cookTime: '120 mins',
       calories: '780 kcals',
       imagePath: 'assets/images/recipes/roasted_duck_image.png',
     ),
     Recipe(
-      name: 'Breakfast Skillet',
+      name: 'Breakfast Skillet\n',
       author: 'Jane Doe',
       cookTime: '25 mins',
       calories: '520 kcals',
@@ -93,6 +100,16 @@ class SavedRecipesScreen extends StatelessWidget {
     ),
   ];
 
+  List<Recipe> get _filteredRecipes {
+    if (_searchQuery.isEmpty) {
+      return _allRecipes;
+    }
+    return _allRecipes.where((recipe) {
+      return recipe.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+             recipe.author.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -102,7 +119,7 @@ class SavedRecipesScreen extends StatelessWidget {
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -120,10 +137,14 @@ class SavedRecipesScreen extends StatelessWidget {
               CustomSearchBar(
                 hintText: 'Search by recipe, author...',
                 onChanged: (value) {
-                  // Handle search functionality for recipes
+                  setState(() {
+                    _searchQuery = value;
+                  });
                 },
                 onSubmitted: (value) {
-                  // Handle search submission for recipes
+                  setState(() {
+                    _searchQuery = value;
+                  });
                 },
               ),
               const SizedBox(height: 16),
@@ -133,13 +154,13 @@ class SavedRecipesScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 8),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
                     childAspectRatio: 0.75,
                   ),
-                  itemCount: recipes.length,
+                  itemCount: _filteredRecipes.length,
                   itemBuilder: (context, index) {
-                    return _buildRecipeCard(context, recipes[index]);
+                    return _buildRecipeCard(context, _filteredRecipes[index]);
                   },
                 ),
               ),
@@ -171,7 +192,6 @@ class SavedRecipesScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Recipe image
           ClipRRect(
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(8),
@@ -180,7 +200,7 @@ class SavedRecipesScreen extends StatelessWidget {
             child: Image.asset(
               recipe.imagePath,
               width: double.infinity,
-              height: 115,
+              height: 130,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
@@ -210,7 +230,7 @@ class SavedRecipesScreen extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: colorScheme.onSurface,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -220,7 +240,7 @@ class SavedRecipesScreen extends StatelessWidget {
                     recipe.author,
                     style: TextStyle(
                       color: colorScheme.outline,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

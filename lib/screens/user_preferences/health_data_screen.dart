@@ -424,14 +424,11 @@ class _HealthDataScreenState extends State<HealthDataScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 10),
-
-              // Title
               Text(
                 "Input your\nhealth data.",
                 style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600,
                   color: Theme.of(context).colorScheme.secondary,
                   height: 1.2,
                 ),
@@ -533,14 +530,15 @@ class _HealthDataScreenState extends State<HealthDataScreen> {
   }
 
   Widget _buildFormField(String label, String value, {required VoidCallback onTap}) {
-    final Color orangeColor = Theme.of(context).colorScheme.secondary;
+    final colorScheme = Theme.of(context).colorScheme;
+    final Color orangeColor = colorScheme.secondary;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFFF8B7D3), // Slightly darker pink for input boxes
+          color: colorScheme.onSecondary,
           borderRadius: BorderRadius.circular(10),
           border: value.isNotEmpty
               ? Border.all(color: orangeColor, width: 1.5)

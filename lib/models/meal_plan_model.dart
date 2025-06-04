@@ -12,7 +12,7 @@ class MealPlanModel extends ChangeNotifier {
       DayPlan(
         date: 'Today, 18 March',
         meals: {
-          'Breakfast': MealItem(name: 'Overnight Oats and Greek Yogurt', isChecked: true),
+          'Breakfast': MealItem(name: 'Overnight Oats and Greek Yogurt', isChecked: false),
           'Lunch': MealItem(name: 'Pan-Roasted Honey Garlic Chicken Thighs', isChecked: true),
           'Dinner': MealItem(name: '', isChecked: false),
         },
@@ -21,8 +21,8 @@ class MealPlanModel extends ChangeNotifier {
       DayPlan(
         date: 'Tomorrow, 19 March',
         meals: {
-          'Breakfast': MealItem(name: 'Overnight Oats and Greek Yogurt', isChecked: true),
-          'Lunch': MealItem(name: 'Pan-Roasted Honey Garlic Chicken Thighs', isChecked: true),
+          'Breakfast': MealItem(name: 'Classic Avocado Toast', isChecked: true),
+          'Lunch': MealItem(name: 'Creamy Garlic Chicken', isChecked: true),
           'Dinner': MealItem(name: 'Braised Beef Stir Fry', isChecked: true),
         },
         isExpanded: true,
@@ -39,7 +39,7 @@ class MealPlanModel extends ChangeNotifier {
       DayPlan(
         date: '21 March',
         meals: {
-          'Breakfast': MealItem(name: 'Overnight Oats and Greek Yogurt', isChecked: true),
+          'Breakfast': MealItem(name: 'Classic Avocado Toast', isChecked: false),
           'Lunch': MealItem(name: '', isChecked: false),
           'Dinner': MealItem(name: '', isChecked: false),
         },

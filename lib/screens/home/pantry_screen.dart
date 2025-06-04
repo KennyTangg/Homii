@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../widgets/custom_search_bar.dart';
 
 class PantryScreen extends StatefulWidget {
   const PantryScreen({super.key});
@@ -8,240 +7,361 @@ class PantryScreen extends StatefulWidget {
   State<PantryScreen> createState() => _PantryScreenState();
 }
 
-class _PantryScreenState extends State<PantryScreen> {
-  final Map<String, bool> _checkedItems = {
-    'Eggs': false,
-    'Milk': false,
-    'Butter': false,
-    'Cheese': false,
-    'Yogurt': false,
-    'Bread': false,
-    'Rice': false,
-    'Pasta': false,
-    'Flour': false,
-    'Sugar': false,
-    'Salt': false,
-    'Pepper': false,
-    'Olive Oil': false,
-  };
+class PantryItem {
+  final String name;
+  final String daysLeft;
+  final String emoji;
+  final Color color;
+  bool isChecked;
 
-  // Add this to track keyboard visibility
-  bool _isKeyboardVisible = false;
+  PantryItem({
+    required this.name,
+    required this.daysLeft,
+    required this.emoji,
+    required this.color,
+    this.isChecked = false,
+  });
+}
+
+class _PantryScreenState extends State<PantryScreen> {
+  String _searchQuery = '';
+  String _sortBy = 'Sort by date';
+
+  final List<PantryItem> _pantryItems = [
+    PantryItem(
+      name: 'Milk',
+      daysLeft: '2 days left',
+      emoji: '🥛',
+      color: const Color(0xFF87CEEB),
+    ),
+    PantryItem(
+      name: 'Bread',
+      daysLeft: '14 days left',
+      emoji: '🍞',
+      color: const Color(0xFFDEB887),
+    ),
+    PantryItem(
+      name: 'Carrots',
+      daysLeft: '19 days left',
+      emoji: '🥕',
+      color: const Color(0xFFFF8C00),
+    ),
+    PantryItem(
+      name: 'Tomato',
+      daysLeft: '50 days left',
+      emoji: '🍅',
+      color: const Color(0xFFFF6347),
+    ),
+    PantryItem(
+      name: 'Eggs',
+      daysLeft: '24 days left',
+      emoji: '🥚',
+      color: const Color(0xFFFFF8DC),
+    ),
+    PantryItem(
+      name: 'Chicken',
+      daysLeft: '40 days left',
+      emoji: '🍗',
+      color: const Color(0xFFDEB887),
+    ),
+    PantryItem(
+      name: 'Potatoes',
+      daysLeft: '50 days left',
+      emoji: '🥔',
+      color: const Color(0xFFD2B48C),
+    ),
+    PantryItem(
+      name: 'Bell pepper',
+      daysLeft: '56 days left',
+      emoji: '🫑',
+      color: const Color(0xFF32CD32),
+    ),
+  ];
+
+  List<PantryItem> get _filteredItems {
+    List<PantryItem> filtered = _pantryItems.where((item) {
+      return item.name.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
+
+    // Sort the filtered items
+    switch (_sortBy) {
+      case 'Sort by date':
+        filtered.sort((a, b) {
+          int aDays = int.tryParse(a.daysLeft.split(' ')[0]) ?? 0;
+          int bDays = int.tryParse(b.daysLeft.split(' ')[0]) ?? 0;
+          return aDays.compareTo(bDays); // Ascending order (expiring soon first)
+        });
+        break;
+      case 'Sort by name':
+        filtered.sort((a, b) => a.name.compareTo(b.name));
+        break;
+      case 'Sort by expiry':
+        filtered.sort((a, b) {
+          int aDays = int.tryParse(a.daysLeft.split(' ')[0]) ?? 0;
+          int bDays = int.tryParse(b.daysLeft.split(' ')[0]) ?? 0;
+          return aDays.compareTo(bDays);
+        });
+        break;
+    }
+
+    return filtered;
+  }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    // Update keyboard visibility
-    _isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: colorScheme.surface,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image banner at the top
-              Container(
-                width: double.infinity,
-                height: 180,
-                decoration: BoxDecoration(
-                  color: colorScheme.primary.withAlpha(25),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                        child: Opacity(
-                          opacity: 0.9,
-                          child: Image.asset(
-                            'assets/images/food_corner.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 20,
-                      left: 20,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: colorScheme.primary.withAlpha(204), // 0.8 opacity
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          'Your Pantry',
-                          style: TextStyle(
-                            color: colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              // Header
+              Text(
+                'My Pantry',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
                 ),
               ),
+              const SizedBox(height: 20),
 
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Pantry',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+              // Sort and Search Row
+              Row(
+                children: [
+                  // Sort dropdown button
+                  PopupMenuButton<String>(
+                    onSelected: (String value) {
+                      setState(() {
+                        _sortBy = value;
+                      });
+                    },
+                    itemBuilder: (BuildContext context) => [
+                      const PopupMenuItem<String>(
+                        value: 'Sort by date',
+                        child: Text('Sort by date'),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      'Track what you have at home',
-                      style: TextStyle(
-                        color: colorScheme.primary,
-                        fontSize: 16,
+                      const PopupMenuItem<String>(
+                        value: 'Sort by name',
+                        child: Text('Sort by name'),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    CustomSearchBar(
-                      hintText: 'Search pantry items...',
-                      onChanged: (value) {
-                        // Handle search functionality for pantry items
-                      },
-                      onSubmitted: (value) {
-                        // Handle search submission for pantry items
-                      },
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Pantry items section
-                    Container(
+                      const PopupMenuItem<String>(
+                        value: 'Sort by expiry',
+                        child: Text('Sort by expiry'),
+                      ),
+                    ],
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
-                        color: isDarkMode ? colorScheme.surface.withAlpha(128) : colorScheme.onPrimary.withAlpha(128), // 0.5 opacity
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: colorScheme.outline.withAlpha(26), // 0.1 opacity
-                          width: 1,
-                        ),
+                        border: Border.all(color: colorScheme.secondary),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Your Items',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: colorScheme.onSurface,
-                                ),
-                              ),
-                              Icon(
-                                Icons.sort,
-                                color: colorScheme.primary,
-                              ),
-                            ],
+                          Text(
+                            _sortBy,
+                            style: TextStyle(
+                              color: colorScheme.secondary,
+                              fontSize: 14,
+                            ),
                           ),
-                          const SizedBox(height: 15),
-
-                          // List of pantry items
-                          ..._checkedItems.keys.map((name) {
-                            return _buildPantryItem(name, _checkedItems[name]!);
-                          }),
+                          const SizedBox(width: 4),
+                          Icon(
+                            Icons.keyboard_arrow_down,
+                            color: colorScheme.secondary,
+                            size: 16,
+                          ),
                         ],
                       ),
                     ),
+                  ),
+                  const SizedBox(width: 12),
 
-                    // Only show the button when keyboard is not visible
-                    if (!_isKeyboardVisible)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.add),
-                          label: const Text('Add new item'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: colorScheme.primary,
-                            foregroundColor: colorScheme.onPrimary,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
+                  // Search bar
+                  Expanded(
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: colorScheme.surface,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: colorScheme.outline.withAlpha(77),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: colorScheme.onSurface.withAlpha(13), // 0.05 opacity
+                            blurRadius: 2,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Search ingredient...',
+                          hintStyle: TextStyle(
+                            color: colorScheme.outline,
+                            fontSize: 14,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: colorScheme.outline,
+                            size: 20,
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 4,
                           ),
                         ),
+                        style: TextStyle(
+                          color: colorScheme.onSurface,
+                          fontSize: 14,
+                        ),
                       ),
-                  ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              // Pantry Items List
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _filteredItems.length,
+                  itemBuilder: (context, index) {
+                    final item = _filteredItems[index];
+                    return _buildPantryItem(item);
+                  },
                 ),
               ),
             ],
           ),
         ),
       ),
-      // Add a floating action button that appears only when keyboard is visible
-      floatingActionButton: _isKeyboardVisible
-          ? FloatingActionButton(
-              onPressed: () {
-                // Hide keyboard
-                FocusScope.of(context).unfocus();
-              },
-              backgroundColor: colorScheme.primary,
-              child: const Icon(Icons.keyboard_hide),
-            )
-          : null,
+      // Floating Action Button
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add new item functionality
+        },
+        backgroundColor: colorScheme.secondary,
+        child: Icon(
+          Icons.add,
+          color: colorScheme.onPrimary,
+        ),
+      ),
     );
   }
 
-  Widget _buildPantryItem(String name, bool isChecked) {
+  Widget _buildPantryItem(PantryItem item) {
     final colorScheme = Theme.of(context).colorScheme;
 
+    // Determine if item is expiring soon (less than 7 days)
+    final daysLeftNumber = int.tryParse(item.daysLeft.split(' ')[0]) ?? 0;
+    final isExpiringSoon = daysLeftNumber <= 7;
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.onSurface.withAlpha(13), // 0.05 opacity
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            name,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: colorScheme.onSurface,
+          // Icon container
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: item.color.withAlpha(51), // 0.2 opacity
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Center(
+              child: Text(
+                item.emoji,
+                style: const TextStyle(fontSize: 24),
+              ),
             ),
           ),
+          const SizedBox(width: 16),
+
+          // Item details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      item.name,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    if (isExpiringSoon) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  item.daysLeft,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: isExpiringSoon ? Colors.red : colorScheme.outline,
+                    fontWeight: isExpiringSoon ? FontWeight.w500 : FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Checkbox
           Checkbox(
-            value: isChecked,
+            value: item.isChecked,
             onChanged: (value) {
               setState(() {
-                _checkedItems[name] = value ?? false;
+                item.isChecked = value ?? false;
               });
             },
             fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
               if (states.contains(WidgetState.selected)) {
-                return colorScheme.secondary; // Use secondary color when checked
+                return colorScheme.secondary;
               }
-              return Colors.transparent; // Transparent background when unchecked
+              return Colors.transparent;
             }),
-            side: BorderSide(color: Colors.grey), // Border color when unchecked
+            side: BorderSide(
+              color: colorScheme.outline.withAlpha(128), // 0.5 opacity
+              width: 1.5,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),

@@ -94,8 +94,8 @@ class _InfoSelectionScreenState extends State<InfoSelectionScreen> {
               Text(
                 'Choose the information you would like to be shown first.',
                 style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.w800,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600,
                   color: Theme.of(context).colorScheme.primary,
                   height: 1.2,
                 ),
