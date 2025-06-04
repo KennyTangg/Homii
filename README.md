@@ -63,7 +63,7 @@ Homii is a comprehensive Flutter-based mobile application designed to revolution
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/homii.git
+   git clone https://github.com/KennyTangg/homii.git
    cd homii
    ```
 
