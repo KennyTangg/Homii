@@ -5,7 +5,6 @@
 
   [![Flutter](https://img.shields.io/badge/Flutter-3.0+-blue.svg)](https://flutter.dev/)
   [![Dart](https://img.shields.io/badge/Dart-3.0+-blue.svg)](https://dart.dev/)
-  [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 </div>
 
 ## 📱 About
@@ -199,46 +198,11 @@ flutter build ios --release
 flutter build web --release
 ```
 
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Code Style
-- Follow [Dart Style Guide](https://dart.dev/guides/language/effective-dart/style)
-- Use meaningful variable and function names
-- Add comments for complex logic
-- Maintain consistent formatting
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 👥 Team
 
 - **Development Team**: BINUS Computer Science Students
-- **UI/UX Design**: Custom design system
-- **Project Management**: Agile methodology
-
-## 📞 Support
-
-For support and questions:
-- 📧 Email: support@homii.app
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/homii/issues)
-- 📖 Documentation: [Wiki](https://github.com/yourusername/homii/wiki)
-
-## 🔄 Changelog
-
-### Version 1.0.0
-- Initial release with core features
-- Meal planning and recipe management
-- Shopping cart functionality
-- Dark/Light theme support
+- **UI/UX Design**: BINUS Graphic Design Students
+- **Project Management**: Binus Communications Students
 
 ---
 
